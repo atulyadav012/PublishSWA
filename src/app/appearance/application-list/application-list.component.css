@@ -1,0 +1,218 @@
+#sidebar-wrapper {
+    min-height: 100vh;
+    /* margin-left: -15rem; */
+    -webkit-transition: margin .25s ease-out;
+    -moz-transition: margin .25s ease-out;
+    -o-transition: margin .25s ease-out;
+    transition: margin .25s ease-out;
+  }
+
+    #sidebar-wrapper .sidebar-heading {
+      padding: 0.55rem 1rem;
+      font-size: 1rem;
+    }
+
+    #sidebar-wrapper .list-group {
+      width: 15rem;
+    }
+
+  #page-content-wrapper {
+    min-width: 100vw;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+  }
+
+  @media (min-width: 768px) {
+    #sidebar-wrapper {
+      margin-left: 0;
+    }
+
+    #page-content-wrapper {
+      min-width: 0;
+      width: 100%;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+      margin-left: -15rem;
+    }
+  }
+
+  /*Range Slider*/
+
+  .custom-ngx-slider .ngx-slider .ngx-slider-bar {
+    background: #ffe4d1;
+    height: 5px;
+  }
+
+  .custom-ngx-slider .ngx-slider .ngx-slider-selection {
+    background: red;
+  }
+
+  .custom-ngx-slider .ngx-slider .ngx-slider-pointer {
+    width: 10px;
+    height: 15px;
+    top: auto; /* to remove the default positioning */
+    bottom: 0;
+    background-color: #22c70a;
+  }
+
+    .custom-ngx-slider .ngx-slider .ngx-slider-pointer:after {
+      display: none;
+    }
+
+  .custom-ngx-slider .ngx-slider .ngx-slider-bubble {
+    bottom: 14px;
+  }
+
+  .custom-ngx-slider .ngx-slider .ngx-slider-limit {
+    font-weight: bold;
+    color: red;
+  }
+
+  .custom-ngx-slider .ngx-slider .ngx-slider-tick {
+    width: 3px;
+    height: 15px;
+    margin-left: 4px;
+    border-radius: 0;
+    background: #ccc;
+    top: -1px;
+  }
+
+    .custom-ngx-slider .ngx-slider .ngx-slider-tick.ngx-slider-selected {
+      background: rgb(0, 110, 255);
+    }
+
+    .border-class{
+      border-style: groove;
+    }
+
+    .border-padding{
+      padding-top: 10px;
+    padding-left: 10px;
+    }
+/*Accordation CSS
+
+Kindly don't delete below code
+Added by Nirav Mehta Dt.: 11-Mar-2022
+
+*/
+
+/*
+.myaccordion {
+    margin: 0 auto;
+    border-radius: 0;
+    overflow: hidden
+}
+
+    .myaccordion .card, .myaccordion .card:last-child .card-header {
+        border: none;
+        background: transparent
+    }
+
+    .myaccordion .card-header {
+        border: none;
+        background: transparent
+    }
+
+        .myaccordion .card-header .heading {
+            position: relative;
+            font-weight: 300;
+            z-index: 0
+        }
+
+            .myaccordion .card-header .heading h3 {
+                font-size: 16px;
+                margin-bottom: 0;
+                text-align: left
+            }
+
+    .myaccordion .fa {
+        font-size: 16px;
+        color: rgba(0,0,0,.3)
+    }
+
+    .myaccordion .btn {
+        width: 100%;
+        font-weight: normal;
+        color: #000;
+        padding: 0;
+        letter-spacing: 0;
+        font-size: 18px;
+        border-radius: 0 !important;
+        border: none;
+        position: relative;
+        background: #1c2938;
+        border-bottom: 1px solid rgba(255,255,255,.1);
+        -webkit-box-shadow: 0 7px 24px -19px rgba(0,0,0,.32);
+        -moz-box-shadow: 0 7px 24px -19px rgba(0,0,0,.32);
+        box-shadow: 0 7px 24px -19px rgba(0,0,0,.32)
+    }
+
+        .myaccordion .btn h3 {
+            text-align: left;
+            color: #fff
+        }
+
+            .myaccordion .btn h3 span {
+                display: block
+            }
+
+                .myaccordion .btn h3 span:first-child {
+                    font-size: 14px;
+                    text-transform: uppercase
+                }
+
+        .myaccordion .btn .icon {
+            z-index: 0
+        }
+
+            .myaccordion .btn .icon i {
+                font-size: 20px;
+                color: #fff
+            }
+
+    .myaccordion .btn-link:hover, .myaccordion .btn-link:focus {
+        text-decoration: none
+    }
+
+[data-toggle="collapse"] .fa:before {
+    content: "\f3d8";
+    font-family: "Ionicons";
+    font-style: normal
+}
+
+[data-toggle="collapse"].collapsed .fa:before {
+    content: "\f3d0";
+    font-family: "Ionicons";
+    font-style: normal
+}
+
+button[aria-expanded="true"] {
+    color: #000 !important;
+    background: #1c2938 !important;
+    border-color: #1c2938 !important;
+    -webkit-box-shadow: 0 7px 24px -19px rgba(0,0,0,.5) !important;
+    -moz-box-shadow: 0 7px 24px -19px rgba(0,0,0,.5) !important;
+    box-shadow: 0 7px 24px -19px rgba(0,0,0,.5) !important;
+    -webkit-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s
+}
+
+@media (prefers-reduced-motion:reduce) {
+    button[aria-expanded="true"] {
+        -webkit-transition: none;
+        -o-transition: none;
+        transition: none
+    }
+}
+
+button[aria-expanded="true"] .fa {
+    color: #38ade0 !important
+}
+
+button[aria-expanded="false"] {
+    background-color: #fff
+} */

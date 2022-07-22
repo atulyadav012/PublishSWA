@@ -1,0 +1,54 @@
+<div class="card card-info">
+    <div class="card-header">
+        <h5>Invite Attorney</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn"
+            (click)="activeModal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="card-body">
+
+        <div *ngIf="Appearances" class="attorney-list">
+            <div class="form-group">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width: 5px;"></th>
+                            <th style="width: 85px;">Case No.</th>
+                            <th style="width: 10px;">Case Title</th>
+                            <th style="width: 10px;">Appearance Date</th>
+                            <th style="width: 10px;">Court Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let appearance of Appearances">
+                            <td><input class="form-check-input" type="checkbox"
+                                    (change)="SelectToInvite($event,appearance)" id="applyAttorney"></td>
+                            <td>{{appearance.appearance.caseNo}}</td>
+                            <td>{{appearance.appearance.caseTitle}}</td>
+                            <td>{{appearance.appearance.appearanceDateTime | DateFormat}}</td>
+                            <td>{{appearance.appearance.courtName}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea class="form-control" [(ngModel)]="Message" row="3"></textarea>
+            </div>
+            <div class="card-footer text-center">
+                <button type="submit" (click)="inviteAttorney()" class="btn btn-info">Invite</button>
+            </div>
+        </div>
+
+
+        <!-- <div *ngIf="!Appearances">
+            <img class="spinner" src="../../../assets/img/loading.gif" alt="HTML5 Icon" width="128" height="128">
+        </div> -->
+        <div *ngIf="Appearances == null">You don't have Appearances to invite, Please create before inviting.</div> 
+        <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="small" color="#fff" type="ball-clip-rotate-multiple"
+            [fullScreen]="false">
+            <p style="color: white"> Loading... </p>
+        </ngx-spinner>
+    </div>
+</div>

@@ -1,0 +1,312 @@
+<div class="card card-primary">
+  <div class="card-header">
+    <h5>{{Attorney?.firstName}} {{Attorney?.lastName}}</h5>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="card-body">
+    <div class="accordion" id="profileAccordation">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            General Information
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse" aria-labelledby="headingOne"
+             data-bs-parent="#profileAccordation">
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-md-3">
+                <!-- <img class="profile-user-img img-responsive img-circle mr-2" src="assets/img/business_user-128x128.png"
+                     alt="User profile picture"> -->
+                     <div class="avatar-profile" style="margin:auto;"> {{getInitials(Attorney?.firstName,Attorney?.lastName)}}</div>
+              </div>
+              <div class="col-md-9">
+                <div class="row ml-1"><label>Name</label></div>
+                <div class="input-group">
+                  <!--<label id="Select1" class="form-control mr-1" style="max-width:70px;"></label>-->
+                  <label class="form-control mr-1">{{Attorney?.firstName}}</label>
+                  <label class="form-control">{{Attorney?.lastName}}</label>
+                </div>
+                <!-- <div class="input-group mt-1">
+                  <label class="form-control">{{Attorney?.middleName}}</label>&nbsp;
+                  <label class="form-control">{{Attorney?.lastName}}</label>
+                </div> -->
+                <div *ngIf="Attorney?.alternateEmail != null" class="form-group">
+                  <label class="ml-2">Alternate Email</label>
+                  <label style="height: 36px;" class="form-control">{{Attorney?.alternateEmail}}</label>
+                </div>
+
+                <div class="form-group">
+                  <label class="ml-2">Mobile No</label>
+                  <label style="height: 36px;" class="form-control">{{Attorney?.mobileNo}}</label>
+                </div>
+
+                <div *ngIf="Attorney?.businessNo != null" class="form-group">
+                  <label  class="ml-2">Business No</label>
+                  <label style="height: 36px;" class="form-control">{{Attorney?.businessNo}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="accordion-item">
+        <h2 class="accordion-header" id="headingAddress">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseAddress" aria-expanded="false" aria-controls="collapseAddress">
+            Address Details
+          </button>
+        </h2>
+        <div id="collapseAddress" class="accordion-collapse collapse" aria-labelledby="headingAddress"
+             data-bs-parent="#profileAccordation">
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row ml-1 mt-1"><label><b>Physical Address</b></label></div>
+                <div class="input-group">
+                  <label class="form-control">{{Attorney?.userAddressDTO[0].address1}} {{Attorney?.userAddressDTO[0].address2}}</label>
+                </div>
+                <div class="row mt-1">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>State</label>
+                      <label class="form-control">{{Attorney?.userAddressDTO[0].stateName}}</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>County</label>
+                      <label class="form-control">{{Attorney?.userAddressDTO[0].countyName}}</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-1">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="ml-1">City</label>
+                      <label class="form-control">{{Attorney?.userAddressDTO[0].cityName}}</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Zip Code</label>
+                      <label class="form-control">{{Attorney?.userAddressDTO[0].zipCode}}</label>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="row ml-1 mt-1">
+                  <div class="float-start col-sm-6"><label><b>Billing Address</b></label></div>
+                  <div class="right  col-sm-6">
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" formControlName="SameAddress"
+                             type="checkbox" id="SameAsBillingCheckChecked">
+                      <label class="form-check-label" for="SameAsBillingCheckChecked">
+                        Same as Physical
+                        Address
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="input-group">
+                  <label class="form-control">{{Attorney?.userAddressDTO[1].address1}}</label>
+                </div>
+                <div class="row mt-1">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>State</label>
+                      <label class="form-control">{{Attorney?.userAddressDTO[1].stateName}}</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>County</label>
+                      <label class="form-control">{{Attorney?.userAddressDTO[1].countyName}}</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-1">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="ml-1">City</label>
+                      <label class="form-control">{{Attorney?.userAddressDTO[1].cityName}}</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Zip Code</label>
+                      <label class="form-control">{{Attorney?.userAddressDTO[1].zipCode}}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <div class="accordion-item" *ngIf="Attorney?.firmName !=null">
+        <h2 class="accordion-header" id="headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Law firm Information
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+             data-bs-parent="#profileAccordation">
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label>Law firm name</label>
+                  <label style="height: 36px;" class="form-control">{{Attorney?.firmName}}</label>
+                </div>
+                <div class="form-group">
+                  <label>Website</label>
+                  <label style="height: 36px;" class="form-control">{{Attorney?.website}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="Attorney?.profileType=='A' || Attorney?.profileType=='EA'" class="accordion-item">
+        <h2 class="accordion-header" id="headingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Profile Details
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+             data-bs-parent="#profileAccordation">
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Years of Experience</label>
+                      <label class="form-control">{{Attorney?.userProfile[0].expYears}}</label>
+                    </div>
+                  </div>
+                  <!-- <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="small">Hourly Rate (Min)</label>
+                      <label class="form-control">{{Attorney?.userProfile[0].hourlyRateMin}}</label>
+                    </div>
+                  </div> -->
+                  <!-- Code commented by atul on dated 10 apr 22 for fix bug 468 Max hourly rate visible on Attorney profile -->
+                  <!-- <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="small">Hourly Rate (Max)</label>
+                      <label class="form-control">{{Attorney?.userProfile[0].hourlyRateMax}}</label>
+                    </div>
+                  </div> -->
+                </div>
+                <!-- <div class="form-group">
+                  <label class="ml-1">General availability: M/F AM/PM</label>
+                  <label class="form-control">{{Attorney?.userProfile[0].generalAvailibilityDays}}</label>
+                </div>
+                <div *ngIf="Attorney?.userProfile[0].generalAvailibilityNotes != null" class="form-group">
+                  <label class="ml-1">General availability Notes</label>
+                  <label class="right text-secondary small">(optional)</label>
+                  <label class="form-control">{{Attorney?.userProfile[0].generalAvailibilityNotes}}</label>
+                </div> -->
+                <div *ngIf="Attorney?.userProfile[0].briefResume != null" class="form-group">
+                  <label class="ml-1">Brief Bio-data</label>
+                  <label class="right text-secondary small">(optional)</label>
+                  <label style="height: 36px;" class="form-control">{{Attorney?.userProfile[0].briefResume}}</label>
+                </div>
+                <!-- <div class="form-group mt-1">
+                  <label class="mr-2 ml-1">Resume Upload</label>
+                  <input id="File1" type="file" />
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingPracticeArea">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapsePracticeArea" aria-expanded="false" aria-controls="collapsePracticeArea">
+            Paractice Area
+          </button>
+        </h2>
+        <div id="collapsePracticeArea" class="accordion-collapse collapse" aria-labelledby="headingPracticeArea"
+             data-bs-parent="#profileAccordation">
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="input-group mt-1">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th width="45%">Practice Area</th>
+                        <th width="40%">Brief Description <span class="right text-secondary small">(optional)</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let practice of PracticeAreas">
+                        <td>
+                          {{practice.practiceArea}}
+                        </td>
+                        <td>
+                          {{practice.briefDescription}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- code modified by atul on dated 19 apr 22 for task 490:Remove BAR# section from Employer profile -->
+      <div *ngIf="Attorney?.profileType != 'E'" class="accordion-item">
+        <h2 class="accordion-header" id="headingBarDetails">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseBarDetails" aria-expanded="false" aria-controls="collapseBarDetails">
+            Bar Details
+          </button>
+        </h2>
+        <div id="collapseBarDetails" class="accordion-collapse collapse" aria-labelledby="headingBarDetails"
+             data-bs-parent="#profileAccordation">
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="input-group mt-1">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th width="45%">State</th>
+                        <th width="40%">Bar #</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let bar of Bars">
+                        <td width="45%" class="text-right">
+                          {{bar.stateName}}
+                        </td>
+                        <td width="40%" class="text-right">
+                          {{bar.barNo}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div *ngIf="Attorney?.profileType == 'EA' || Attorney?.profileType == 'A'" class="m-1">Click <a href="https://www.americanbar.org/groups/legal_services/flh-home/flh-bar-directories-and-lawyer-finders/" target="_blank">here</a> to verify Attorney's Bar Number</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "ball-clip-rotate-multiple" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>

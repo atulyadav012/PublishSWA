@@ -1,0 +1,33 @@
+<footer class="footer mt-auto py-3 bg-light border-top">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6"><span class="text-muted">&copy; 2021 - Videtur &nbsp;</span></div>
+      <div class="col-sm-6" *ngIf="!loggedin()">
+        <div class="float-end">
+          <a [routerLink]="['/privacy']">Privacy</a>&nbsp;|&nbsp;
+          <a [routerLink]="['/terms']">Terms of Service</a>&nbsp;|&nbsp;
+          <!-- Following 1 line commented by atul on 25 jun 22 on nirav's request -->
+          <!-- <a [routerLink]="['/disclaimer']">Disclaimer</a>&nbsp;|&nbsp; -->
+          <a [routerLink]="['/faqs']">FAQs</a>
+        </div>
+      </div>
+      <div class="col-sm-6" *ngIf="loggedin()">
+        <div class="float-end">
+          <b>Version</b> 1.0.0
+        </div>
+      </div>
+      <hr *ngIf="loggedin()" />
+      <div class="container" *ngIf="loggedin()">
+        <div class="row">
+          <div class="container">
+            <div class="text-dark">
+              <!-- Following 1 line commented by atul on 25 jun 22 on nirav's request -->
+              <!-- | Disclaimer -->
+              About Us | How It Works | Contact Us | Privacy Policy | Terms and Conditions | FAQs
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,115 @@
+<div class="card card-primary">
+  <div class="card-header">
+    <!-- Code modified with atul on 18 apr 22 for fix bug 472: Remove Min rate from the Appearance card. Also remove from New appearance creation screen  -->
+<!-- Following header modified by atul on 27 may 22. (Removed {{Appearance.stateName}}-{{Appearance.countyName}} on nirav's request) -->
+    <h5>Appearance Court Name - <i> {{Appearance.courtName}}
+        {{Appearance.appearanceDateTime | date}} {{Appearance.maxRate == 99999 ? "$neg" : "$" + Appearance.maxRate}}<small>/hr</small></i></h5>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn"
+      (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="card-body">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4">
+          <label for="exampleFormControlSelect1">Case Type</label>
+          <label class="form-control">{{Appearance.practiceArea}}</label>
+        </div>
+        <div class="col-md-4">
+          <label for="exampleFormControlSelect1">Appearance Type</label>
+          <label class="form-control">{{Appearance.appearanceType}}</label>
+        </div>
+        <div class="col-md-4">
+          <label for="inputAddress">Case Number</label>
+          <label class="form-control">{{Appearance.caseNo}}</label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="exampleFormControlSelect1">Location State</label>
+          <label class="form-control">{{Appearance.stateName}}</label>
+        </div>
+        <div class="col-md-6">
+          <label for="exampleFormControlSelect1">Location County</label>
+          <label class="form-control">{{Appearance.countyName}} </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">Court House</label>
+      <label class="form-control">{{Appearance.courtName}}</label>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4">
+          <label for="inputAddress">Appearance Date</label>
+          <label class="form-control">{{Appearance.appearanceDateTime| date}}</label>
+        </div>
+        <div class="col-md-4">
+          <label for="inputAddress">Appearance Time</label>
+          <label class="form-control">{{Appearance.appearanceDateTime| date:'hh:mm'}}</label>
+        </div>
+        <div class="col-md-4">
+          <!-- Code modified with atul on 18 apr 22 for fix bug 472: Remove Min rate from the Appearance card. Also remove from New appearance creation screen  -->
+          <label for="inputAddress">Max Rate</label>
+          <div class="input-group">
+            <!-- <label class="form-control">{{Appearance.minRate}}</label>
+            &nbsp; -->
+            <label class="form-control" 
+            [ngClass]="{ 'blank-textbox': Appearance.maxRate == 99999}" >{{Appearance.maxRate == 99999 ? " " :Appearance.maxRate}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="Appearance.caseTitle != null" class="form-group">
+      <label for="inputAddress">Case Title</label>
+      <label class="form-control">{{Appearance.caseTitle}}</label>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="exampleFormControlSelect1">Min. Years of Experience</label>
+          <label class="form-control" id="staticEmail2">{{Appearance.minExp}}</label>
+        </div>
+        <div *ngIf="Appearance?.languages?.length >0" class="col-md-6">
+          <label for="exampleFormControlSelect1">Language Requirement</label>
+          <label class="form-control" id="staticEmail2">{{Appearance.languages}}</label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <table class="table table-bordered">
+        <thead>
+      <!-- Code modified by atul on 6 apr 2022 on mehul's request removed delete button and shown files -->
+          <tr>
+            <th>File Name</th>
+            <th>File Type</th>
+            <!-- <th>Action</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of Appearance.files;">
+            <td style="cursor: pointer;" (click)="DownloadDocs(item.relativePath, item.name)">{{item.name}}</td>
+            <td>{{item.type}}</td>
+            <!-- <td>
+              <span class="pointer text-danger">
+                <i class="fa fa-trash-o"></i>
+              </span>
+            </td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="Appearance.description != null" class="form-group">
+      <label for="exampleFormControlTextarea1">Description</label>
+      <label class="form-control">{{Appearance.description}}</label>
+    </div>
+    <div *ngIf="Appearance.notes != null" class="form-group">
+      <label for="exampleFormControlTextarea1">Note</label>
+      <label class="form-control">{{Appearance.notes}}</label>
+    </div>
+  </div>
+</div>

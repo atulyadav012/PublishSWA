@@ -1,0 +1,37 @@
+
+.clickType{
+    cursor: pointer;
+    color: blue;
+}
+.card-body-sep{
+    border-bottom: 1px solid #dee2e6!important;
+    padding-bottom: 1.25rem;
+}
+.card-body{
+    padding-bottom: unset;
+}
+.modal-body{
+    padding-left: 1.25em;
+}
+.adisabled {
+    cursor: not-allowed;
+    opacity: .65;
+    pointer-events: none;
+  }
+  
+  a.adisabled:hover { text-decoration: none; }
+  a.adisabled:focus { text-decoration: none; }
+  a.adisabled:active { text-decoration: none; }
+.card-primary-dark:not(.card-outline) > .card-header,
+        .card-primary:not(.card-outline) > .card-header a {
+            background-color: #006491;
+            color: #fff; 
+        }
+
+.border-primary-dark{
+    border-color: #006491!important;
+}
+
+.clickicon {
+    cursor: pointer;
+}

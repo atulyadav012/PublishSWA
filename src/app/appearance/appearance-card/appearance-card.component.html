@@ -1,0 +1,169 @@
+<div class="{{dynamicClass}}">
+  <div class="card-header">
+    <div class="row">
+      <div class="col">
+        <h3 class="card-title">
+          {{Appearance.appearance.courtName}}
+        </h3>
+      </div>
+      <div class="col-3">
+        <div>
+          <button type="button" class="btn btn-tool" data-bs-toggle="collapse"
+            [attr.data-bs-target]="'#collapseCardBody'+Appearance.appearance.autoId" aria-expanded="false"
+            aria-controls="collapseCardBody" title="Collapse">
+            <i class="fa fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-tool" data-bs-toggle="Appearance" title="View Details" *ngIf="loggedin()"
+            (click)="openAppearanceView(Appearance.appearance.autoId)">
+            <i class="fa fa-link"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="col-12">
+        <span class="fs-5 fw-bold">{{Appearance.appearance.appearanceDateTime | date: 'MMM d, y, h:mm a'}}</span>
+        <span class="fs-5 float-end">
+          <!-- ${{Appearance.appearance.minRate }} - -->
+          <b>${{Appearance.appearance.maxRate == 99999 ? 'neg':Appearance.appearance.maxRate }}</b><small>/hr</small></span>
+      </div>
+    </div>
+  </div>
+  <div class="card-body" [attr.id]="'collapseCardBody'+Appearance.appearance.autoId">
+    <div class="row">
+      <span><i class="fa fa-tasks text-secondary" title="Practice Area | Appearance Type"></i>&nbsp;&nbsp;<b>{{Appearance.appearance.practiceArea }} | {{Appearance.appearance.appearanceType }}</b></span>
+    </div>
+    <div class="row">
+      <span *ngIf="profileType != 'A' && authService.isLoggedIn() && Appearance.appearance.caseNo != null"><i class="fa fa-file-code-o text-secondary" title="Case Number"></i>&nbsp;&nbsp;Case # {{Appearance.appearance.caseNo}}</span>
+    </div>
+    <div><i class="fa fa-map-marker text-secondary" title="State - Country"></i>&nbsp;&nbsp;{{Appearance.appearance.stateName}}-{{Appearance.appearance.countyName}} </div>
+    <div class="row" *ngIf="profileType == 'A'">
+      <div  class="col-12" *ngIf="Appearance.appearance.firmName != null && Appearance.appearance.firmName != ''">
+        <a [ngClass]="{'adisabled': disableLink, 'clickicon': !disableLink}" class="text-primary" data-toggle="tooltip"
+        title="View Profile" (click)="openEmployerDetails(Appearance.appearance.userMasterId)"><i class="fa fa-building text-secondary" title="Lawfirm"></i>&nbsp;&nbsp;{{Appearance.appearance.firmName}}</a></div>
+      <div class="col-12" *ngIf="Appearance.appearance.firmName == null"><a [ngClass]="{'adisabled': disableLink, 'clickicon': !disableLink}" class="text-primary" data-toggle="tooltip"
+        title="View Profile" (click)="openEmployerDetails(Appearance.appearance.userMasterId)"><i class="fa fa-user text-secondary" title="Individual"></i>&nbsp;&nbsp;Individual</a></div>
+    </div>
+    <div *ngIf="!authService.isLoggedIn()" class="row">
+      <div class="col-md-4 col-sm-12" *ngIf="Appearance.appearance.firmName != null && Appearance.appearance.firmName != ''">
+        <i class="fa fa-building text-secondary" title="Lawfirm"></i>&nbsp;&nbsp;{{MaskedFirmName}}</div>
+        <div class="col-md-4 col-sm-12" *ngIf="Appearance.appearance.userBarNumber != null && Appearance.appearance.userBarNumber != ''">
+          {{MaskedBarNo}}</div>
+      <div class="col-md-4 col-sm-12" *ngIf="Appearance.appearance.firmName == null"><i class="fa fa-user text-secondary" title="Individual"></i>&nbsp;&nbsp;Individual</div>
+    </div>
+    <!--Below code added By Nirav on 09-May-2022 for Work Item 507-->
+    <!-- <div *ngIf="Appearance.appearance.recordStatus=='Approved' && profileType != 'A'" class="row">
+      <div class="col-md-12">{{Appearance.appearance.approvedFirstName}} {{Appearance.appearance.approvedLastName}}
+      </div>
+      <div class="col-md-12">Bid Amount <span class="text-danger fw-bold">${{Appearance.appearance.approvedBidAmount}}</span>
+        <span class="clickType text-end" (click)="ViewProfile(Appearance.appearance.autoId,Appearance.appearance.approvedAttorneyId)">
+           View Profile</span>
+      </div>
+    </div> -->
+    <!--Below code added By Nirav on 07-May-2022 for Work Item 507-->
+    <!-- <div *ngIf="Appearance.appearance.recordStatus=='Completed' && profileType != 'A'" class="row">
+      <div class="col-md-12">
+        <span>{{Appearance.appearance.approvedFirstName}} {{Appearance.appearance.approvedLastName}}</span>
+        <span class="clickType text-end" (click)="ViewProfile(Appearance.appearance.autoId,Appearance.appearance.approvedAttorneyId)">
+           View Profile</span></div>
+      <div class="col-md-12">Approved <span class="text-danger fw-bold">${{Appearance.appearance.approvedBidAmount}}</span></div>
+    </div> -->
+    <!--Above code added By Nirav on 07-May-2022 for Work Item 507-->
+    <div class="row" *ngIf="showInvoiceLink();"><a style="cursor: pointer;" class="link-primary" data-bs-dismiss="modal"
+      data-bs-toggle="modal" data-bs-target="#Modal" (click)="ShowInvoices(Appearance.appearance.autoId)"><i class="fa fa-file-o text-secondary" title="Individual"></i>&nbsp;&nbsp;Inv #
+      {{Appearance.appearance.invoiceNumber}} {{Appearance.appearance.invoiceDueDate | date}}
+    </a></div>
+    <div class="card-body-sep"></div>
+  </div>
+  <!-- /.card-body -->
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-auto"><span class="fs-5 fw-bold">{{Appearance.appearance.recordStatus == 'ReOpen' ? 'ReOpened' : Appearance.appearance.recordStatus}}</span></div>
+      <div class="col text-end" *ngIf="loggedin() && profileType != 'A' && status=='Open'">
+        Applications/Invitation: <span class="clickType" (click)="InvitedApplicates(Appearance.appearance.autoId)">
+          {{Appearance.appearance.noOfApplied +Appearance.appearance.noOfInvited}}</span>
+      </div>
+      <div class="col text-end" *ngIf="loggedin() && profileType != 'A' && (status=='Expired' || status=='Cancelled')">
+        Applications/Invitation: {{Appearance.appearance.noOfApplied +Appearance.appearance.noOfInvited}}
+      </div>
+      <div class="col" *ngIf="loggedin() && profileType != 'A' && (status=='Completed' || status=='Closed')">
+        <span class="fs-5 text-danger"><b>${{Appearance.appearance.approvedBidAmount}}</b><small>/hr</small></span>
+        <span class="clickType" (click)="ViewProfile(Appearance.appearance.autoId,Appearance.appearance.approvedAttorneyId)"> {{Appearance.appearance.approvedFirstName}} {{Appearance.appearance.approvedLastName}}</span>
+      </div>
+      <div class="col" *ngIf="loggedin() && profileType != 'A' && Appearance.appearance.recordStatus=='Approved'">
+        <span class="fs-5 text-danger">  <b>${{Appearance.appearance.approvedBidAmount}}</b><small>/hr</small></span>
+        <span class="clickType" (click)="ViewProfile(Appearance.appearance.autoId,Appearance.appearance.approvedAttorneyId)"> {{Appearance.appearance.approvedFirstName}} {{Appearance.appearance.approvedLastName}}</span>
+      </div>
+      <div class="col-md-auto" *ngIf="(Appearance.appearance.recordStatus=='Approved' || Appearance.appearance.recordStatus=='Completed' || Appearance.appearance.recordStatus=='Closed') && profileType == 'A'" ><span class="fs-5 text-danger"><b>${{Appearance.appearance.approvedBidAmount}}</b><small>/hr</small></span></div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="row" *ngIf="loggedin()">
+      <div class="col-lg-11">
+        <button *ngIf="FindAttorneyBtn" [disabled]="passedCurrentDate" class="{{dynamicBtnClass}}"
+          (click)="SearchAttorney(Appearance.appearance.autoId)" title="Find Attorney">
+          <i class="fa fa-search"></i> Find Attorney
+        </button>
+        <button *ngIf="EditBtn" [disabled]="passedCurrentDate" class="{{dynamicBtnClass}}"
+          (click)="Update(Appearance.appearance.autoId)" title="Update">
+          <i class="fa fa-pencil-square-o"></i> Update
+        </button>
+        <button *ngIf="CancelBtn" [disabled]="passedCurrentDate" class="{{dynamicBtnClass}}" title="Cancel"
+          (click)="openCancelAppearance(Appearance.appearance.autoId)">
+          <i class="fa fa-ban"></i> Cancel
+        </button>
+        <button *ngIf="Messagebtn" class="{{dynamicBtnClass}}" title="Message"
+          (click)="openMessage(Appearance.appearance)">
+          <i class="fa fa-comments-o"></i> Msg.
+        </button>
+        <button *ngIf="ApproveBtn" [disabled]="passedCurrentDate" class="{{dynamicBtnClass}}" title="{{thumbsUpTitle}}"
+          (click)="openApplyAppearance(Appearance.appearance.autoId)">
+          <i class="fa fa-thumbs-o-up"></i> Apply
+        </button>
+        <!-- <button *ngIf="ShowRejectBtn()" [disabled]="passedCurrentDate" (click)="openReject(Appearance.appearance)" class="{{dynamicBtnClass}}"
+          title="Reject">
+          <i class="fa fa-thumbs-o-down"></i>
+        </button> -->
+        <button *ngIf="WithdrawBtn" [disabled]="passedCurrentDate" class="{{dynamicBtnClass}}" title="Withdraw"
+          (click)="openWithdraw(Appearance.appearance.autoId)">
+          <i class="fa fa-minus-circle"></i> Withdraw
+        </button>
+        <button *ngIf="ReopenBtn" class="{{dynamicBtnClass}}" title="Re-Open"
+          (click)="openReOpenAppearance(Appearance.appearance.autoId)">
+          <i class="fa fa-folder-open-o"></i> Re-Open
+        </button>
+        <button *ngIf="CompleteBtn" [disabled]="passedCurrentDate" class="{{dynamicBtnClass}}" title="Complete"
+          (click)="openCompleteAppearance(Appearance.appearance.autoId)">
+          <i class="fa fa-list-alt"></i> Complete
+        </button>
+        <button *ngIf="DocumentsBtn" class="{{dynamicBtnClass}}" title="Documents"
+          (click)="openAppearanceDoc(Appearance.appearance.autoId)">
+          <i class="fa fa-file-text-o"></i> Docs.
+        </button>
+        <!-- <button *ngIf="Appearance.recordStatus=='Completed'" class="btn btn-outline-secondary rounded btn-sm" title="Invoice" -->
+        <button *ngIf="InvoiceBtn" class="{{dynamicBtnClass}}" title="Invoice"
+          (click)="InvoiceEntry(Appearance.appearance.autoId)">
+          <i class="fa fa-file"></i> Invoice
+        </button>
+      </div>
+      <div class="col-lg-1 p-0 m-0 align-items-center">
+        <button *ngIf="ShowInfoBtn()" class="{{dynamicBtnClass}}" title="Information"
+          (click)="openAppearanceInfo(Appearance.appearance.autoId)">
+          <i class="fa fa-info"></i>
+        </button>
+      </div>
+    </div>
+    <div class="row" *ngIf="!loggedin()">
+      <div class="col">
+        <button class="{{dynamicBtnClass}}" (click)="openLoginPopup(Appearance.appearance.autoId)">
+          <i class="fa fa-thumbs-o-up"></i> Apply
+        </button>
+        <button class="{{dynamicBtnClass}}" title="Message" (click)="openLoginPopup(Appearance.appearance.autoId)">
+          <i class="fa fa-comments-o"></i> Message
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- /.card-footer-->
+</div>

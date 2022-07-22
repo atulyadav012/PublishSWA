@@ -1,0 +1,63 @@
+<div mat-dialog-title>
+
+    <!-- <mat-icon color="warn">error_outline</mat-icon> -->
+  
+    <h3 cdkTrapFocus>{{ data?.title }}</h3>
+  
+    <button
+  
+      data-analytics.event-info.event-type="modal"
+  
+      data-analytics.event-info.event-action="close"
+  
+      [attr.data-analytics.event-attributes.modalName]="data?.title"
+  
+      mat-button
+  
+      class="close-btn"
+  
+      (click)="closeDialog()"
+  
+      tabindex="-1"
+  
+    >
+  
+      X
+  
+    </button>
+  
+  </div>
+  
+   
+  
+  <mat-dialog-content *ngIf="!isPatner">
+  
+    <p>Due to inactivity, you will be automatically logged out from your current session {{ idleState }}</p>
+  
+  </mat-dialog-content>
+ 
+  
+  <mat-dialog-actions>
+  
+    <button
+  
+      data-analytics.event-info.event-type="modal"
+  
+      data-analytics.event-info.event-action="close"
+  
+      [attr.data-analytics.event-attributes.modalName]="data?.title"
+  
+      mat-button
+  
+      (click)="closeDialog()"
+  
+      class="primary_btn"
+  
+    >
+  
+      Keep me logged in
+  
+    </button>
+  
+  </mat-dialog-actions>
+  

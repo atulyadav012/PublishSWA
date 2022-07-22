@@ -1,0 +1,242 @@
+<!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs mb-3">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Appearance Entry</h1>
+      <ol>
+        <li><a [routerLink]="['/dashboard']">Home</a></li>
+        <li><a [routerLink]="['/appearance-list','Open']">Appearance</a></li>
+        <li>Appearance Entry</li>
+      </ol>
+    </div>
+  </div>
+</section><!-- End Breadcrumbs -->
+<section>
+  <div class="container mb-3">
+    <div class="row">
+      <div class="col-lg-6 m-auto">
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3>Appearance Details</h3>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="appearanceForm" (ngSubmit)="onSubmit()">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="exampleFormControlSelect1">Case Type</label>
+                    <select class="form-control" formControlName="caseType"
+                      [ngClass]="{ 'is-invalid': (submitted && f.caseType.errors) }" (change)="OnSelectedCaseType($event.target)" id="exampleFormControlSelect1">
+                      <option value="">Select Type</option>
+                      <option *ngFor="let case of caseList" value="{{case?.autoId}}">
+                        {{case?.practiceArea}}
+                      </option>
+                    </select>
+                    <div *ngIf="(submitted || f.caseType.errors)" class="invalid-feedback">
+                      <div *ngIf="f.caseType.errors?.required">Case Type is Required.</div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="exampleFormControlSelect1">Appearance Type</label>
+                    <select class="form-control" formControlName="appearanceType"
+                      [ngClass]="{ 'is-invalid': (submitted && f.appearanceType.errors) }"
+                      id="exampleFormControlSelect1">
+                      <option value="">Select Type</option>
+                      <option *ngFor="let appear of appearanceList" value="{{appear?.autoId}}">
+                        {{appear?.appearanceType1}}
+                      </option>
+                    </select>
+                    <div *ngIf="(submitted || f.appearanceType.errors)" class="invalid-feedback">
+                      <div *ngIf="f.appearanceType.errors?.required">Appearance Type is Required.</div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="inputAddress">Case Number</label>
+                    <input type="text" class="form-control"
+                      [ngClass]="{ 'is-invalid': (submitted && f.caseNumber.errors) }" formControlName="caseNumber"
+                      id="inputAddress" placeholder="Case number">
+                    <div *ngIf="(submitted || f.caseNumber.errors)" class="invalid-feedback">
+                      <div *ngIf="f.caseNumber.errors?.required">Case Number is Required.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6">
+                    <label for="exampleFormControlSelect1">Location State</label>
+                    <select class="form-control" formControlName="locationState"
+                      [ngClass]="{ 'is-invalid': (submitted && f.locationState.errors) }"
+                      (change)="onSelectedState($event.target)" id="exampleFormControlSelect1">
+                      <option value="">Select State</option>
+                      <option *ngFor="let state of stateList" value="{{state?.autoId}}">
+                        {{state?.stateName}}
+                      </option>
+                    </select>
+                    <div *ngIf="(submitted || f.locationState.errors)" class="invalid-feedback">
+                      <div *ngIf="f.locationState.errors?.required">Location State is Required.</div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="exampleFormControlSelect1">Location County</label>
+                    <select class="form-control" formControlName="locationCounty"
+                      [ngClass]="{ 'is-invalid': (submitted && f.locationCounty.errors) }"
+                      (change)="OnSelectedCounty($event.target)"
+                      id="exampleFormControlSelect1">
+                      <option value="">Select County</option>
+                      <option *ngFor="let county of countyList" value="{{county?.autoId}}">
+                        {{county?.countyName}}
+                      </option>
+                    </select>
+                    <div *ngIf="(submitted || f.locationCounty.errors)" class="invalid-feedback">
+                      <div *ngIf="f.locationCounty.errors?.required">Location County is Required.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">Court House</label>
+                <select class="form-control" [ngClass]="{ 'is-invalid': (submitted && f.courtHouse.errors) }"
+                  formControlName="courtHouse" id="exampleFormControlSelect1">
+                  <option value="">Select Type</option>
+                  <option *ngFor="let court of courtList" value="{{court?.autoId}}">
+                    {{court?.courtName}}
+                  </option>
+                </select>
+                <div *ngIf="(submitted || f.courtHouse.errors)" class="invalid-feedback">
+                  <div *ngIf="f.courtHouse.errors?.required">Court House is Required.</div>
+                </div>
+                <div><a href="#" class="nav-link" data-bs-dismiss="modal" data-bs-toggle="modal"
+                  data-bs-target="#Modal" (click)="openAddCourt('')">Add New Court, If your doesnot exists in given list.</a></div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="inputAddress">Appearance Date</label>
+                    <input type="date" min-date="currentDate" class="form-control"
+                      [ngClass]="{ 'is-invalid': (submitted && f.appearanceDate.errors) }"
+                      formControlName="appearanceDate" id="inputAddress" placeholder="Appearance Date">
+                    <div *ngIf="(submitted || f.appearanceDate.errors)" class="invalid-feedback">
+                      <div *ngIf="f.appearanceDate.errors?.required">Appearance Date is Required.</div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="inputAddress">Appearance Time </label> &nbsp;
+                    <label class="text-secondary small"> (PST)</label>
+                    <input type="time" class="form-control"
+                      [ngClass]="{ 'is-invalid': (submitted && f.appearanceTime.errors) }"
+                      formControlName="appearanceTime" id="inputAddress" placeholder="Appearance time">
+                    <div *ngIf="(submitted || f.appearanceTime.errors)" class="invalid-feedback">
+                      <div *ngIf="f.appearanceTime.errors?.required">Appearance Time is Required.</div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <!-- Code modified with atul on 18 apr 22 for fix bug 472: Remove Min rate from the Appearance card. Also remove from New appearance creation screen  -->
+                    <label for="inputAddress">Max Rate /hr</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control"
+                        [ngClass]="{ 'is-invalid': (submitted && f.minRate.errors) }" formControlName="minRate"
+                        id="inputAddress" placeholder="Min. Rate" value="0" style="display:none ">
+                      <input type="number" class="form-control"
+                        [ngClass]="{ 'is-invalid': (submitted && f.maxRate.errors) }" (keypress)="decimalFilter($event)" formControlName="maxRate"
+                        id="maxRate" placeholder="Max. Rate" maxlength="4">
+                    </div>
+                    <div *ngIf="(submitted || f.minRate.errors)" class="invalid-feedback">
+                      <div *ngIf="f.minRate.errors?.required">Min Rate is Required.</div>
+                    </div>
+                    <div *ngIf="(submitted || f.maxRate.errors)" class="invalid-feedback">
+                      <div *ngIf="f.maxRate.errors?.required">Max Rate is Required.</div>
+                    </div>
+                    <span *ngIf="f.maxtRate?.errors?.maxRateisLess && f.maxtRate.touched" class="error-block">
+                      Max rate should be greater than min rate.
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputAddress">Case Title</label>
+                <label class="pull-right text-secondary small">(optional)</label>
+                <input type="text" class="form-control" formControlName="caseTitle" id="staticEmail2" value="">
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6">
+                    <label for="exampleFormControlSelect1">Years of Experience</label>
+                    <label class="pull-right text-secondary small">(optional)</label>
+                    <input type="number" formControlName="minExp" class="form-control" id="staticEmail2">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="exampleFormControlSelect1">Language Requirement</label>
+                    <label class="pull-right text-secondary small">(optional)</label>
+                    <!-- <select class="form-control" formControlName="languageReq" id="exampleFormControlSelect1"
+                      multiple="multiple">
+                      <option value="English">English</option>
+                      <option value="French">French</option>
+                    </select> -->
+                    <ng-select [multiple]="true" formControlName="languageReq">
+                      <ng-option *ngFor="let lang of languages" [value]="lang.recordName">
+                        {{lang.recordName}}
+                      </ng-option>
+                      <!-- <ng-option [value]="'custnpm install --save @ng-select/ng-option-highlightom'">Custom</ng-option> -->
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">Upload Appearance Documents</label>
+                <label class="float-end text-secondary small">(optional)</label>
+                <div class="clearfix"></div>
+                <input type="file" class="form-control-file" multiple (change)="uploadDocument($event)"
+                  id="exampleFormControlFile1">
+                <!-- <span class="upload" *ngIf="progress > 0">
+                  {{progress}}%
+                </span> -->
+              </div>
+              <div *ngIf="selectedFiles.length >0" class="form-group">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>File Name</th>
+                      <th>File Type</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let file of selectedFiles">
+                      <td>{{file.name}}</td>
+                      <td>{{file.type}}</td>
+                      <td>
+                        <span class="pointer text-danger">
+                          <i class="fa fa-trash-o" (click)="DeleteFile(file)"></i>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">Description</label>
+                <label class="pull-right text-secondary small">(optional)</label>
+                <textarea class="form-control" formControlName="description" id="exampleFormControlTextarea1"
+                  rows="2"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">Note</label>
+                <label class="pull-right text-secondary small">(optional)</label>
+                <textarea class="form-control" formControlName="note" id="exampleFormControlTextarea1"
+                  rows="2"></textarea>
+              </div>
+              <div class="my-2">
+                 A fee will be applicable if the appearance is cancelled within 24 hrs of appearance date.
+              </div>
+              <button type="submit" class="btn btn-primary">{{buttonText}}</button>
+              <button type="button" class="btn btn-outline-danger float-end" (click)="back()">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "ball-clip-rotate-multiple" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>

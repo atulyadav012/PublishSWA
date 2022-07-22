@@ -1,0 +1,19 @@
+<div class="card card-info">
+  <div class="card-header">
+    <h5>Re-open Appearance</h5>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+    <div class="card-body">
+      <p>An automatic invitation will be sent to all the attorneys who were invited/applied along with the message. </p>
+      <div class="form-group">
+        <label>Message to Attorney</label>
+        <textarea class="form-control" [(ngModel)]="message" row="3"></textarea>
+      </div>
+    </div>
+    <div class="card-footer text-center">
+      <button type="submit" (click)="Reopen()" class="btn btn-info">Submit</button>
+    </div>
+  
+</div>

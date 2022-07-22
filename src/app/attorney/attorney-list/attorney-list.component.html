@@ -1,0 +1,126 @@
+<!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Attorney List</h1>
+      <ol>
+        <li *ngIf="!authService.isLoggedIn()"><a [routerLink]="['/']">Home</a></li>
+        <li *ngIf="authService.isLoggedIn()"><a [routerLink]="['/dashboard']">Home</a></li>
+        <li>Attorney List</li>
+      </ol>
+    </div>
+  </div>
+</section><!-- End Breadcrumbs -->
+<section>
+  <div class="mb-3">
+    <div class="d-flex" id="wrapper">
+      <app-side-filter *ngIf="attorneyList && showFilter" [CalledFor]="'Attorney'" [List]="attorneyList" (FilteredList)="Filter($event)"></app-side-filter>
+      <!-- /#sidebar-wrapper -->
+      <!-- Page Content -->
+      <div id="page-content-wrapper">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-top  pt-1 pb-1">
+          <div class="container-fluid">
+            <div class="col-md-6">
+              <button (click)="ShowFilterPane()" class="btn btn-light" id="menu-toggle">
+                <i class="fa fa-filter"></i>&nbsp;
+                <span>Filter by</span>
+              </button>
+            </div>
+            <!-- <div class="col-md-6">
+              <div class="float-end">
+                <div class="row">
+                  <div class="col-md-6"> -->
+                    <!-- BEGIN ORDER RESULT -->
+                    <!-- <div class="dropdown">
+                      <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1"
+                              data-bs-toggle="dropdown" aria-expanded="false">
+                        Order by
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">Name</a></li>
+                        <li><a class="dropdown-item" href="#">Date</a></li>
+                        <li><a class="dropdown-item" href="#">View</a></li>
+                        <li><a class="dropdown-item" href="#">Rating</a></li>
+                      </ul>
+                    </div> -->
+                    <!-- END ORDER RESULT -->
+                  <!-- </div>
+                  <div class="col-md-6">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-outline-secondary active"><i class="fa fa-th"></i></button>
+                      <button type="button" class="btn btn-outline-secondary"><i class="fa fa-list"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+        </nav>
+
+
+        <div class="container-fluid">
+          <div *ngIf="!IsAppearanceSearch" class="row p-2">
+            <div class="card card-light">
+              <div class="bg-teal pt-2">
+                <div class="row">
+                  <!-- <div class="col-md-10" *ngIf="attorneyList?.length >0">Showing {{attorneyList?.length}} results matching <span *ngIf="selectedCaseTypeText.length>0">PracticeArea: {{selectedCaseTypeText}}</span><span *ngIf="selectedstateText.length>0">, Location: {{selectedstateText}}</span></div>
+                  <div class="col-md-10" *ngIf="attorneyList?.length ==0 || attorneyList == null"> No Attorneys matching <span *ngIf="selectedCaseTypeText.length>0">PracticeArea: {{selectedCaseTypeText}}</span><span *ngIf="selectedstateText.length>0">, Location: {{selectedstateText}}</span></div>
+                  <div class="col-md-10" *ngIf="attorneyList?.length < 5">Please note: We are expanding our services. You will soon be able to see more Attorneys.</div> -->
+
+                  <div class="col-md-10">
+                    <p style="margin-bottom: 0px;" *ngIf="attorneyList?.length >0">Showing {{attorneyList?.length}} results matching <span *ngIf="selectedCaseTypeText.length>0">PracticeArea: {{selectedCaseTypeText}}</span><span *ngIf="selectedstateText.length>0 && selectedCaseTypeText.length>0">, </span><span *ngIf="selectedstateText.length>0"> Location: {{selectedstateText}}</span></p>
+                  
+                   <p style="margin-bottom: 0px;" *ngIf="attorneyList?.length ==0 || attorneyList == null">  No Attorneys matching <span *ngIf="selectedCaseTypeText.length>0">PracticeArea: {{selectedCaseTypeText}}</span><span *ngIf="selectedstateText.length>0 && selectedCaseTypeText.length>0">, </span><span *ngIf="selectedstateText.length>0">Location: {{selectedstateText}}</span></p>
+                  
+                  <span style="color: #0d6efd;font-weight: bold;" *ngIf="attorneyList?.length < 5">Please note: we are expanding our services and will soon be able to offer more Attorneys in your region!</span>
+                  </div>
+                  <div class="col-md-2"><div class="float-end" (click)="back()" style="cursor: pointer;"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid">
+          <!-- <h1 class="mt-4">Simple Sidebar</h1>
+          <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
+          <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when clicked.</p> -->
+          <div class="row" *ngIf="IsAppearanceSearch">
+            <div class="pb-3 pe-3 pt-3">
+              <div *ngIf="Appearance" class="card card-light">
+                <div class="bg-teal p-2">
+                  <div class="row">
+                    <div class="col-md-9" *ngIf="attorneyList?.length > 0">
+                      Showing {{attorneyList?.length}} results matching  {{Appearance?.stateName}}-{{Appearance?.countyName}} {{Appearance?.courtName}}
+                      {{Appearance?.appearanceDateTime | DateFormat}} ${{Appearance?.maxRate == 99999 ? 'neg':Appearance?.maxRate}}
+                    </div>
+                    <div class="col-md-9" *ngIf="attorneyList?.length == 0 ||  attorneyList == null">
+                      No Attorney matching  {{Appearance?.stateName}}-{{Appearance?.countyName}} {{Appearance?.courtName}}
+                      {{Appearance?.appearanceDateTime | DateFormat}} ${{Appearance?.maxRate == 99999 ? 'neg':Appearance?.maxRate}}
+                    </div>
+                    <div style="color: #0d6efd;font-weight: bold;" class="col-md-9" *ngIf="attorneyList?.length < 5">Please note: we are expanding our services and will soon be able to offer more Attorneys in your region!</div>
+                    <div  class="col-md-3 form-group form-check form-switch">
+                      <input *ngIf="IsAppearanceSearch && attorneyList?.length > 0" class="form-check-input" (click)="CheckAll()" [(ngModel)]="selectAll" type="checkbox" id="SelectAllAttorney">&nbsp;<label *ngIf="attorneyList?.length > 0" class="form-check-label">Select All Atorney</label>
+                      &nbsp;<div class="float-end" (click)="back()" style="cursor: pointer;"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12" *ngFor="let attorney of attorneyList;">
+              <app-attorney-card [IsAppearanceSearch]="IsAppearanceSearch" (SelectedToInvite)="AttorneytoInvite($event)" (OpentoInvite)="openInvite($event)" [IsSelectedAll]="selectAll" [attorney]="attorney"></app-attorney-card>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+  </div>
+</section>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "ball-clip-rotate-multiple" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<app-idle></app-idle>

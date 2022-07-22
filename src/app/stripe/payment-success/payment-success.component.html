@@ -1,0 +1,86 @@
+<!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs mb-3">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Payment Status</h1>
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li>Payment Status</li>
+      </ol>
+    </div>
+  </div>
+</section>
+<!-- End Breadcrumbs -->
+<!-- ======= Page Content ======= -->
+<section>
+  <div class="container mb-3">
+    <div class="row">
+      <div class="col-md-12">
+        <div  class="card border-success border-top border-bottom">
+          <div class="card-header">
+            <h5><b> {{paymentStatusMessage}}</b></h5> <span *ngIf="!isError">Last transaction details are given below: </span>
+          </div>
+          <div  *ngIf="!isError" class="card-body">
+            <div id="divForPrint">
+              <table>
+                <tr>
+                  <td> <label class="col-sm-12">Transaction Ref. No. </label></td>
+                  <td> <label>: {{ReferenceNo}}</label></td>
+                </tr>
+                <tr>
+                  <td> <label class="col-sm-12">Transaction Amount </label></td>
+                  <td><label>: {{TransactionAmount | currency:'USD':'symbol'}} </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td> <label class="col-sm-12">Transaction Description </label></td>
+                  <td>
+                    <label>:&nbsp;</label>
+                     <label *ngIf="LateCharges > 0.0" >Late Charges: {{LateCharges | currency:'USD':'symbol'}}, &nbsp; </label>
+                    <label>Vidture Charges: {{VidtureCharges | currency:'USD':'symbol'}} </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="col-sm-12">Payment Status </label></td>
+                  <td><label>: {{PaymentStatus}}</label></td>
+                </tr>
+                <tr>
+                  <td><label class="col-sm-12">Receipt No. </label></td>
+                  <td> <label>: {{ReceiptNo}}</label></td>
+                </tr>
+                <tr>
+                  <td> <label class="col-sm-12">Receipt Date </label></td>
+                  <td> <label>: {{ReceiptDate}}</label></td>
+                </tr>
+                <tr>
+                  <td> <label class="col-sm-12">Invoice Number </label></td>
+                  <td> <label>: {{InvoiceNumber}}</label></td>
+                </tr>
+              </table>
+            </div>
+            <br>
+            <div class="form-group">
+              <label class="col-sm-4"> </label>
+              <button class="col-sm-2 btn btn-success" [useExistingCss]="true" printSectionId="divForPrint"
+                ngxPrint>Print Receipt</button>
+            </div>
+            <div class="row"  >
+              <label class="col-sm-4"> &nbsp; </label>
+              <div class="col-sm-8" *ngIf="isPaymentSuccess" >
+                <a href="/invoice-list/Paid">Click here</a> to go to Paid Invoices.
+              </div>
+              <div class="col-sm-8"  *ngIf="!isPaymentSuccess">
+                <a href="/invoice-list/Due">Click here</a> to go to Due Invoices.
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "ball-clip-rotate-multiple" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>

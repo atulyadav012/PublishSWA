@@ -1,0 +1,11 @@
+
+.card-body-sep{
+  border-bottom: 1px solid #dee2e6!important;
+  padding-bottom: 1.25rem;
+}
+.card-body{
+  padding-bottom: unset;
+}
+.modal-body{
+  padding-left: 1.25em;
+}

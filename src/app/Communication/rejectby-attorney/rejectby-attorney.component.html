@@ -1,0 +1,24 @@
+<div class="card card-pink">
+    <div class="card-header">
+      <h5 *ngIf="!IsFromInvoice">Reject Attorney</h5>
+      <h5 *ngIf="IsFromInvoice">Reject Invoice</h5>
+      <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    
+      <div class="card-body">
+        <h5 *ngIf="!IsFromInvoice" class="card-title">You are Rejecting this application!</h5>
+        <h5 *ngIf="IsFromInvoice" class="card-title">You are Rejecting this Invoice!</h5>
+        <br />
+        <div class="form-group">
+          <label>Reject Reason</label>
+          <textarea class="form-control" [(ngModel)]="RejectReason" row="3"></textarea>
+        </div>
+      </div>
+      <div class="card-footer text-center">
+        <button type="submit" (click)="RejectByAttorney()" class="btn btn-outline-danger">Submit</button>
+      </div>
+    
+  </div>
+  

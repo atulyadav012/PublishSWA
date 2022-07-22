@@ -1,0 +1,22 @@
+<!-- Following section modified by atul on 17 jun 22 on mehul's request -->
+<div class="card card-pink">
+  <div class="card-header">
+    <h5>{{this.authService.currentUserValue.profileType == 'A'? 'Declining Invitation' : 'Reject Attorney'}} </h5>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  
+    <div class="card-body">
+      <h5 class="card-title">You are {{this.authService.currentUserValue.profileType == 'A'? 'Declining' : 'Rejecting'}} {{src.firstName}} {{src.lastName}}!</h5>
+      <br />
+      <div class="form-group">
+        <label>{{this.authService.currentUserValue.profileType == 'A'? 'Decline' : 'Reject'}} Reason</label>
+        <textarea class="form-control" [(ngModel)]="RejectReason" row="3"></textarea>
+      </div>
+    </div>
+    <div class="card-footer text-center">
+      <button type="submit" (click)="RejectAttorney()" class="btn btn-outline-danger">Submit</button>
+    </div>
+  
+</div>

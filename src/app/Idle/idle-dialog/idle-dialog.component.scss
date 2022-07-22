@@ -1,0 +1,95 @@
+:host {
+
+  .mat-dialog-title {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    font-family: "Tele-Grotesk-Ultr", "Arial", sans-serif;
+
+    align-items: flex-end;
+
+
+
+    .mat-icon {
+
+      font-size: 33px;
+
+      margin-right: 20px;
+
+      height: 40px;
+
+    }
+
+
+
+    h3 {
+
+      flex: 1
+
+    }
+
+
+
+    .close-btn {
+
+      min-width: auto;
+      float: right;
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1;
+      color: #000;
+      text-shadow: 0 1px 0 #ffffff;
+      opacity: .5;
+
+
+      &:hover {
+
+        background-color: transparent;
+
+      }
+
+
+
+      & > .mat-button-focus-overlay {
+
+        display: none;
+
+      }
+
+    }
+
+  }
+
+
+
+  .primary_btn {
+
+    background-color: #e20074;
+
+    color: #ffffff;
+
+    min-width: 150px;
+
+    min-height: 48px;
+
+    border-radius: inherit;
+
+  }
+
+
+
+  .mat-dialog-actions {
+
+    padding-top: 20px;
+
+  }
+
+}
+
+:host .mat-dialog-actions {
+
+  justify-content: flex-end;
+
+}

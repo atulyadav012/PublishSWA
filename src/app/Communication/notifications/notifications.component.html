@@ -1,0 +1,80 @@
+<!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs">
+  <div class="container-fluid">
+      <div class="d-flex justify-content-between align-items-center">
+          <h1>Notifications</h1>
+          <ol>
+              <li><a [routerLink]="['/dashboard']">Home</a></li>
+              <li>Notifications</li>
+          </ol>
+      </div>
+  </div>
+</section><!-- End Breadcrumbs -->
+<section>
+  <div class="mb-3">
+      <div class="container">
+        <div class="row p-2">
+            <div class="card card-light">
+                <div class="bg-teal pt-2">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <p>Showing {{notifications?.length}} notifications</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row p-2">
+            <div class="card card-light">
+                <div class="bg-teal pt-2 pb-2">
+                    <div class="row">
+                      <div class="ms-2 me-5">
+                        <table style="width: 100%;">
+                          <tr>
+                            <td style="width: 10%;"><input type="checkbox" (change)="CheckAll()" [(ngModel)]="selectAll"/> Select All</td>
+                            <td style="width: 40%;"></td>
+                            <td style="width: 50%; text-align: right;">
+                              <span class="btn text-success" (click)="MarkReadNotification(0)">
+                              <i class="fa fa-envelope-open-o" ></i> Mark read </span> | 
+                              <span class="btn text-danger" (click)="DeleteNotification(0)">
+                                <i class="fa fa-trash-o"  ></i> Delete </span></td>
+                          </tr>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+      </div>
+      <div class="row" *ngFor="let notification of notifications">
+          <div class="accordion" id="accordionNotification">
+              <div class="accordion-item">
+                  <h2 class="accordion-header" id="{{notification.autoId}}">
+                      <button class="accordion-button {{notification.class}}" type="button" data-bs-toggle="collapse"
+                          (click)="MarkReadNotification(notification.autoId)"
+                          [attr.data-bs-target]="'#collapse'+notification.autoId" aria-expanded="false" [attr.aria-controls]="'collapse'+notification.autoId">
+                          <table style="width: 100%;">
+                            <tr>
+                              <td style="width: 5%;"><input [(ngModel)]="notification.selected" type="checkbox"></td>
+                              <td style="width: 80%;"><span>{{notification.triggerContent | slice:0:40}}</span></td>
+                              <td style="width: 15%;"><span>{{notification.triggerDateTime| dateAgo}}</span></td>
+                            </tr>
+                          </table>
+                      </button>
+                  </h2>
+                  <div [attr.id]="'collapse'+notification.autoId" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                      data-bs-parent="#accordionNotification">
+                      <div class="accordion-body">
+                        <div [innerHTML]="notification.formattedtriggerContent"></div>
+                        <hr>
+                        <div><i class="btn fa fa-trash text-danger" (click)="DeleteNotification(notification.autoId)"></i></div>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+      </div>
+      </div>
+  </div>
+</section>

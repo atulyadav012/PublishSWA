@@ -1,0 +1,35 @@
+.close {
+    padding: 1rem;
+    margin: -0rem -0.25rem -0rem auto;
+  }
+  
+  .close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  
+  .close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #ffffff;
+    opacity: .5;
+  }
+  .invoice-version {
+    float: right;
+    margin-right: 50px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  
+  .card {
+    margin-bottom: 0;
+  }
+  

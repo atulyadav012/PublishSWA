@@ -1,0 +1,74 @@
+
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 style="display: inline ;">Invoice Details  
+                </h3>
+                
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn"
+                  (click)="activeModal.dismiss('Cross click')">
+                  <span aria-hidden="true">×</span>
+                </button>
+                <span class="invoice-version">
+                  Version: {{invoiceVersion}}
+              </span>
+            </div>
+            <div class="card-body">
+            <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()"><!--   -->
+              
+                <div class="form-group" >
+                  <label for="inputAddress">Invoice Number</label>
+                  <input type="text" formControlName="invoiceNo" class="form-control" id="inputAddress" placeholder="Invoice number" readonly>
+                </div>
+                <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="inputAddress">Invoice Date</label>
+                  <input type="Date" formControlName="invoiceDate" class="form-control" id="inputAddress" placeholder="Invoice Date" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="inputAddress">Invoice Due Date</label>
+                  <input type="Date" formControlName="invoiceDueDate" class="form-control" id="inputAddress" placeholder="Invoice Due Date" readonly>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-3">
+                    <label for="inputAddress">Hourly Rate</label>
+                    <input type="number" formControlName="hourlyRate" class="form-control" id="inputAddress" placeholder="Hourly Rate" readonly>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="inputAddress">Hours</label>
+                    <input type="number" formControlName="hours" (change)="calculateTotal()" class="form-control" id="inputAddress" placeholder="Hours" readonly>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="inputAddress">Minutes</label>
+                    <!-- <input type="number" formControlName="hours" (change)="calculateTotal()" class="form-control" id="inputAddress" placeholder="Hours"> -->
+                    <select name="Minutes" id="Minutes" (change)="calculateTotal()" formControlName="minutes" class="form-control" readonly>
+                      <option value="0" >0 minutes</option>
+                      <option value="15">15 minutes</option>
+                      <option value="30">30 minutes</option>
+                      <option value="45">45 minutes</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="inputAddress">Adjustment</label>
+                    <input type="number" formControlName="adjustment" (change)="calculateTotal()" class="form-control" id="inputAddress" placeholder="Adjustments" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputAddress">Total</label>
+                <input type="number" formControlName="total" class="form-control" id="inputAddress" placeholder="Total" readonly>
+              </div>
+
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">Remarks</label>
+                <textarea class="form-control" formControlName="remarks" id="exampleFormControlTextarea1" rows="3" readonly></textarea>
+              </div>
+            </form>
+          </div>
+        </div>
+     

@@ -1,0 +1,30 @@
+<!--<div class="carousel-caption d-md-block">
+     <div class="centerMe">-->
+      <div class="col-md-12">
+          <div class="input-group mb-3">
+            <div [ngClass]="{'col-xl-5':displayat=='N','col':displayat=='H'}">
+              <ng-select [placeholder]="Placeholder" [multiple]="true" [(ngModel)]="selectedPracticeArea" [ngClass]="{'form-control search-control':displayat=='H'}">
+                <ng-option *ngFor="let case of caseList" [value]="case?.autoId">
+                  {{case?.practiceArea}}
+                </ng-option>
+              </ng-select>
+            </div>
+            <div [ngClass]="{'col-xl-5':displayat=='N','col':displayat=='H'}">
+              <ng-select [placeholder]="'Select State'" [multiple]="true" [(ngModel)]="selectedState"  [ngClass]="{'form-control search-control':displayat=='H'}">
+                <ng-option *ngFor="let loc of locations" [value]="loc?.autoId">
+                  {{loc?.stateName}}
+                </ng-option>
+              </ng-select>
+            </div>
+            <div class="input-group-append">
+              <span [ngClass]="{'input-group-text bg-primary':displayat=='H'}">
+                <button type="submit" (click)="SearchFilter()" [ngClass]="{'border-0 btn-primary pt-1 pb-1':displayat=='H','btn btn-sm btn-success':displayat=='N'}">
+                  <i class="fa fa-search" *ngIf="displayat=='H'"></i>
+                  <i class="fa fa-search" *ngIf="displayat=='N'"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+      </div>
+    <!-- </div>
+  </div>-->

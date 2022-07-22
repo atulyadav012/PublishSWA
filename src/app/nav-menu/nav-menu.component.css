@@ -1,0 +1,115 @@
+/*--------------------------------------------------------------
+# Nav Bar Items
+--------------------------------------------------------------*/
+.navbar {
+  padding: unset;
+}
+
+.nav-item {
+  line-height: 40px;
+}
+
+  .nav-item .dropdown-item {
+    line-height: 30px;
+    padding-top: unset;
+    padding-bottom: unset;
+  }
+
+.nav-link {
+  color: #001b56;
+}
+ngb-rating {
+  color: #FFC107;
+  font-size: 25px;
+}
+
+.nav-item a {
+  display: block;
+  position: relative;
+  color: #001b56;
+  transition: 0.3s;
+}
+
+  .nav-item a:hover, .nav-item .active > a, .nav-item li:hover > a {
+    color: #FFF;
+    background-color: #001b56;
+  }
+
+.nav-item .active {
+  color: #FFF;
+  background-color: #001b56;
+}
+
+.navbar-nav > li > a:hover, .navbar-nav > li > a:focus {
+  color: #fff;
+  background-color: #001b56;
+}
+
+.navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
+  color: #FFF;
+  background-color: #001b56;
+}
+
+.navbar-toggler {
+  /*color: #FFF;*/
+  background-color: #001b56;
+  border: none;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 0.9)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+@media (max-width: 768px) {
+  .nav-item {
+    line-height: normal;
+  }
+
+    .nav-item > .nav-link {
+      padding: 0.5rem;
+    }
+}
+
+.navbar-badge {
+  font-size: .6rem;
+  font-weight: 300;
+  padding: 2px 4px;
+  position: absolute;
+  right: 5px;
+  top: 2px;
+}
+.ng-select .ng-select-container {
+  min-height: 10px;
+}
+
+.ng-select .ng-select-single .ng-select-container {
+  height: 10px;
+}
+.navbar-nav > .user-menu > .dropdown-menu > li.user-header p{line-height: 25px;}
+
+/*Switch Colour Updates*/
+.form-switch .form-check-input:focus {
+  border-color: rgba(0, 0, 0, 0.25);
+  outline: 0;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(0,0,0,0.25)'/></svg>");
+}
+.form-switch .form-check-input:checked {
+  background-color: #0000FF;
+  border-color: #0000FF;
+  border: none;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(255,255,255,1.0)'/></svg>");
+}
+.form-switch .form-check-input:not(:checked) {
+  background-color: #30D158;
+  border-color: #30D158;
+  border: none;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(255,255,255,1.0)'/></svg>");
+}
+
+.selected {
+  font-weight: bold ;
+}
+.unSelected {
+  font-weight: normal;
+}

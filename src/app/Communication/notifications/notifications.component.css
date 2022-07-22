@@ -1,0 +1,6 @@
+.notification-unreaded{
+    background-color: bisque !important;
+}
+.notification-readed{
+    background-color: white !important;
+}

@@ -1,0 +1,179 @@
+<div *ngIf="profileType != 'A'" class="card card-orange">
+  <div class="card-header">
+    <div class="row">
+      <div class="col">
+        <h3 class="card-title">
+          {{Applicant.firstName}} {{Applicant.lastName}}
+        </h3>
+      </div>
+      <div class="col-4 text-end">
+        <div>
+          <button type="button" class="btn btn-tool" data-bs-toggle="collapse"
+                  [attr.data-bs-target]="'#collapseCardBody'+Applicant.autoId" aria-expanded="false"
+                  aria-controls="collapseCardBody" title="Collapse">
+            <i class="fa fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-tool" data-bs-toggle="Appearance" title="Open" *ngIf="loggedin()"
+                  (click)="openAppearanceView(Applicant.userMasterId)">
+            <i class="fa fa-link"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="col-12">
+        BAR # {{Applicant?.barDetails[0]?.barNo}}
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body" [attr.id]="'collapseCardBody'+Applicant.autoId">
+    <div class="row">
+      <div class="col-lg-12"><i class="fa fa-tasks text-secondary" title="Practice Area"></i>&nbsp;&nbsp;{{Applicant.practiceType.join(', ')}}</div>
+      <!-- <div class="col-lg-12">Year of experience: <b>{{Applicant.expYears }}</b></div> -->
+      <!-- Code commented by Nirav on 15-Apr-2022 to resolve Work Item # 479 Pint 1 -->
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-sm-12" *ngIf="Applicant.languages.length > 0 && Applicant.languages != null && Applicant.languages != ''"><i class="fa fa-language text-secondary" title="Language"></i>&nbsp;&nbsp;Bilingual: {{Applicant.languages}}</div>
+      <!-- <div class="col-md-6 col-sm-12">Avg. Rating: {{Applicant.avgRating}}</div> -->
+      <!-- Code commented by Nirav on 15-Apr-2022 to resolve Work Item # 479 Pint 1 -->
+    </div>
+
+    <!-- <div class="row">
+      <div class="col-md-4"><b>{{Applicant.recordStatus}}</b></div>
+      <div class="col-md-8" *ngIf="loggedin()">
+        Applications/Invitation: <a href="#" class="text-blue text-bold text-lg">0</a>
+      </div>
+    </div> -->
+    <div class="card-body-sep"></div>
+  </div>
+  <!-- /.card-body -->
+  <div class="modal-body">
+    <div class="row">
+      <!-- <div class="col-md-12"><b>{{Applicant.attorneyStatus}}</b> &nbsp; <span *ngIf="Applicant.attorneyStatus!='Invited' || Applicant.attorneyStatus!='Declined'" class="text-danger fw-bold">${{Applicant.bidAmount}}</span></div> -->
+      <div class="col-md-12"><span class="fs-5"><b>{{Applicant.attorneyStatus}}</b></span> &nbsp; <span *ngIf="Applicant.attorneyStatus!='Invited' && Applicant.attorneyStatus!='Declined'" class="fs-5 text-danger"><b>${{Applicant.bidAmount}}</b><small>/hr</small></span></div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="row" *ngIf="loggedin()">
+      <div class="col-lg-11">
+        <button class="btn border-orange btn-sm me-1" title="Message" (click)="openMessage(Applicant.userMasterId)">
+          <i class="fa fa-comments-o"></i> Msg.
+        </button>
+        <button *ngIf="ShowApproveBtn()" class="btn border-orange btn-sm me-1" title="Approve" (click)="ApproveApplication(Applicant.autoId)">
+          <i class="fa fa-thumbs-o-up"></i> Approve
+        </button>
+        <button *ngIf="ShowRejectBtn()" (click)="openReject(Applicant)" class="btn border-orange btn-sm" title="Reject">
+          <i class="fa fa-thumbs-o-down"></i> Reject
+        </button>
+      </div>
+      <div class="col-lg-1 p-0 m-0 align-items-center">
+        <button class="btn border-orange btn-sm" title="Information" (click)="openAppearanceInfo(AppearanceId,Applicant.userMasterId)">
+          <i class="fa fa-info"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- /.card-footer-->
+</div>
+
+<div *ngIf="profileType == 'A'" class="card card-orange">
+  <div class="card-header">
+    <div class="row">
+      <div class="col">
+        <h3 class="card-title">
+          {{Applicant?.courtName}}
+        </h3>
+      </div>
+      <div class="col-3">
+        <div>
+          <button type="button" class="btn btn-tool" data-bs-toggle="collapse"
+            [attr.data-bs-target]="'#collapseCardBody'+Applicant.autoId" aria-expanded="false"
+            aria-controls="collapseCardBody" title="Collapse">
+            <i class="fa fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-tool" data-bs-toggle="Appearance" title="Open" *ngIf="loggedin()"
+            (click)="openAppearanceView(Applicant.userMasterId)">
+            <i class="fa fa-link"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="col-12">
+        <span class="fs-5 fw-bold">{{Applicant?.appearanceDateTime | DateFormat }}</span> <span class="fs-5 float-end"><b>${{Applicant?.maxRate == 99999 ? 'neg':Applicant?.maxRate}}</b><small>/hr</small></span>
+      </div>
+    </div>
+  </div>
+  <div class="card-body" [attr.id]="'collapseCardBody'+Applicant.autoId" style="padding-bottom:unset;">
+    <div class="row">
+      <div class="col-md-12"><i class="fa fa-tasks text-secondary" title="Case Type | Appearance Type"></i>&nbsp;&nbsp;<b>{{Applicant.practiceArea}} | {{Applicant.appearanceType}}</b></div>
+      <div class="col-md-12"><i class="fa fa-map-marker text-secondary" title="State - County"></i>&nbsp;&nbsp;{{Applicant?.stateName}}-{{Applicant?.countyName}} </div>
+    </div>
+    <div class="row" *ngIf="Applicant.generalProfile.firmName != null && Applicant.generalProfile.firmName != ''">
+      <div class="col-7">
+        <a  style="cursor: pointer;" class="text-primary" data-toggle="tooltip" title="View Profile"
+        (click)="openAppearanceView(Applicant.userMasterId,'P')"><i class="fa fa-building text-secondary" title="Lawfirm"></i>&nbsp;&nbsp;{{Applicant.generalProfile.firmName}}</a>
+      </div>
+    </div>
+    <div class="row" *ngIf="Applicant.generalProfile.firmName == null && Applicant.generalProfile.firmName == ''">
+      <div class="col-md-5"><a style="cursor: pointer;" class="text-primary" data-toggle="tooltip" title="View Profile"
+        (click)="openAppearanceView(Applicant.userMasterId,'P')"><i class="fa fa-user text-secondary" title="Individual"></i>&nbsp;&nbsp;Individual</a>
+      </div>
+    </div>
+    <!-- Code commented to resolve Client Points
+      1) remove min yrs of experience
+      2) can we remove language from cards and min experience
+   -->
+    <!-- <div class="row">
+      <div class="col-md-6"><b>Min Yrs of exp: {{Applicant.minExp }}</b></div>
+      <div class="col-md-6">{{Applicant.appearanceLanguages}}</div>
+    </div> -->
+    <div class="card-body-sep"></div>
+  </div>
+  <!-- /.card-body -->
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12"><span class="fs-5"><b>{{Applicant.applicationStatus}}</b></span>&nbsp;<span  *ngIf="profileType=='A' && status=='Applied' && Applicant.applicationStatus =='Applied'" class="fs-5 text-danger"><b>${{Applicant.bidAmount}}</b><small>/hr</small> </span>
+        &nbsp;<span  *ngIf="profileType=='A' && status=='Applied' && Applicant.applicationStatus =='Applied'"><a
+          href="#" class="link-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#Modal"
+          (click)="reviseBidAmount()">Revise</a></span></div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <div class="row" *ngIf="loggedin()">
+      <div class="col-lg-11">
+        <button class="btn border-orange btn-sm me-1" title="Message" (click)="openMessage(Applicant.userMasterId)">
+          <i class="fa fa-comments-o"></i> Msg.
+        </button>
+        <button *ngIf="ShowApproveBtn()" class="btn border-orange btn-sm me-1" title="{{Approvetitle}}"
+          (click)="ApproveApplication(Applicant)">
+          <i class="fa fa-thumbs-o-up"></i> {{Approvetitle}}
+        </button>
+
+        <button *ngIf="ShowRejectBtn()" (click)="openReject(Applicant)" class="btn border-orange btn-sm me-1" title="Decline">
+          <i class="fa fa-thumbs-o-down"></i> Decline
+        </button>
+
+        <button *ngIf="ShowDocumentBtn()" class="btn border-orange btn-sm me-1" title="Documents"
+          (click)="openAppearanceDoc(Applicant.autoId)">
+          <i class="fa fa-file-text-o"></i> Docs.
+        </button>
+        <button *ngIf="ShowWithdrawBtn()" class="btn border-orange btn-sm me-1" title="Withdraw"
+          (click)="openWithdraw(Applicant.autoId)">
+          <i class="fa fa-minus-circle"></i> Withdraw
+        </button>
+      </div>
+      <div class="col-lg-1 p-0 m-0 align-items-center">
+        <button class="btn border-orange btn-sm me-1" title="Information" (click)="openAppearanceInfo(AppearanceId,Applicant.userMasterId)">
+          <i class="fa fa-info"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- /.card-footer-->
+</div>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "ball-clip-rotate-multiple" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>

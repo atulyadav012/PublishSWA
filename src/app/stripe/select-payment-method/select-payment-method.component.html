@@ -1,0 +1,80 @@
+<div class="card card-primary">
+  <div class="card-header">
+    <h5>Select Payment Method</h5>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn"
+      (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="card-body">
+    <div class="container">
+      <div class="row g-1">
+        <div class="col-7">
+          <div class="container">
+            <div class="row">
+                <div *ngFor="let method of paymentMethods" class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <div class="col-12">
+                    <div class="border bg-light">
+                      <div class="container">
+                        <div class="row g-2">
+                            <div class="col" style="vertical-align: middle;"><img [src]="method.paymentImage" alt="icon" class="img-fluid"/></div>
+                            <div class="col-7">
+                              <label>
+                                {{method.paymentDescription}} 
+                              </label>
+                            </div>
+                            <div class="col-3 pt-1">
+                              <label class="bg-danger text-white p-1 rounded float-end">
+                                <input type="radio" id="option{{method.autoId}}" name="options" autocomplete="off" [(ngModel)]="selectedValue"
+                                  value="{{method.autoId}}" > Select
+                                  <!-- (change)="handleChangeMethod(method.paymentChargesPercentage, method.paymentChargesFixed)" -->
+                              </label>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-5">
+          <div class="border bg-light ps-1 pe-1 pt-1">
+            <!-- <div class="form-group"> -->
+              <table>
+                <tr>
+                  <td style="width: 65%;">Invoice Amount </td>
+                  <td style="width: 1%;" class="border-secondary border-bottom">:</td>
+                  <td style="width: 35%; text-align:right;" class="border-secondary border-bottom"><label class="text-primary">{{src.totalAmount | currency:'USD':'symbol'}}</label></td>
+                </tr>
+                <tr *ngIf="src.latePayment != 0">
+                  <td>Late Charges ({{src.latePaymentPct}}%)</td>
+                  <td style="width: 1%;" class="border-secondary border-bottom">:</td>
+                  <td style="text-align:right;"><label class="text-primary">{{src.latePayment | currency:'USD':'symbol'}}</label></td>
+                </tr>
+                <tr>
+                  <td>Vidture Charges ({{src.videturCommPer}}%)</td>
+                  <td style="width: 1%;" class="border-secondary border-bottom">:</td>
+                  <td style="text-align:right;" class="border-secondary border-bottom"><label class="text-primary">{{src.videturCommAmount | currency:'USD':'symbol'}}</label></td>
+                </tr>
+                <!-- <tr>
+                  <td>Stripe Charges </td>
+                  <td style="width: 1%;" class="border-secondary border-bottom">:</td>
+                  <td style="text-align:right;" class="border-secondary border-bottom"><label class="text-warning">{{src.stripeCharges | currency:'USD':'symbol'}}</label></td>
+                </tr> -->
+                <tr>
+                  <td class="bg-white"><label>Total Amount</label></td>
+                  <td style="width: 1%;" class="bg-white"><label>:</label></td>
+                  <td style="text-align:right;" class="bg-white"><label class="fs-1 text-danger">{{src.totalForPay | currency:'USD':'symbol'}}</label></td>
+                </tr>
+              </table>
+            <!-- </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-center">
+    <button type="submit" (click)="payInvoice(src)" class="btn btn-primary" style="width: 200px">Proceed for Payment ></button>
+  </div>
+</div>

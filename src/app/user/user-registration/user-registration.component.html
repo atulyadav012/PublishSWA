@@ -1,0 +1,85 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header border-bottom-0">
+      <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-title text-center">
+        <h4><img src="assets/img/Videtur_Logo.png" /></h4>
+      </div>
+      <div class="d-flex flex-column text-center">
+        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="First name..." required
+                  formControlName="firstName">
+                <span *ngIf="!firstName.valid  && (firstName.errors?.touched || userSubmitted)"
+                  class="error-block">Please provide first name.</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Last name..." required formControlName="lastName">
+                <span *ngIf="!lastName.valid  && (lastName.errors?.touched || userSubmitted)" class="error-block">Please
+                  provide last name.</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="email" class="form-control" placeholder="Your email address..." required
+              formControlName="loginId">
+            <span *ngIf="!loginId.valid  && (loginId.errors?.touched || userSubmitted)" class="error-block">Please
+              provide login id.</span>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" placeholder="Your password..." required
+              formControlName="password">
+            <span *ngIf="!password.valid && (password.touched || userSubmitted)" class="error-block">
+              <span *ngIf="password.errors?.required">
+                Please provide password.
+              </span>
+              <span *ngIf="password.errors?.minlength">
+                Password should not be lesser than 8 character.
+              </span>
+            </span>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" placeholder="confirm your password..." required
+              formControlName="confirmPassword">
+            <span *ngIf="!confirmPassword.valid && (confirmPassword.touched || userSubmitted)" class="error-block">
+              <span *ngIf="confirmPassword.errors?.required">
+                Please confirm password.
+              </span>
+            </span>
+            <span *ngIf="confirmPassword.errors?.passwordMismatch && confirmPassword.touched" class="error-block">
+              Password not matched.
+            </span>
+          </div>
+          <div class="form-group mt-4">
+            <input class="form-check-input" type="checkbox" id="checkbox624" formControlName="acceptTerms">
+            <label for="checkbox624" class="white-text form-check-label">
+              &nbsp;Accept the<a href="terms-condition.html" class="text-primary font-weight-bold">
+                Terms and Conditions
+              </a>
+            </label>
+            <div *ngIf="acceptTerms.errors?.required" class="error-block">
+              Please accept terms and conditions.
+            </div>
+          </div>
+          <button type="submit" [disabled]="!registrationForm.valid"
+            class="btn btn-success btn-lg btn-block btn-round">Sign Up</button>
+          <!-- [disabled]="!registrationForm.valid"  -->
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-center">
+      <div class="signup-section">Already have an account? <a href="#" class="text-primary" data-bs-dismiss="modal"
+          data-bs-toggle="modal" data-bs-target="#loginModal"
+          (click)="activeModal.dismiss('Cross click');openLoginPopup('1');"> Sign In</a>.</div>
+    </div>
+  </div>
+</div>

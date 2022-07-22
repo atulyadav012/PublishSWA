@@ -1,0 +1,22 @@
+    <!-- ======= Breadcrumbs ======= -->
+    <section class="breadcrumbs mb-3">
+      <div class="container">
+          <div class="d-flex justify-content-between align-items-center">
+              <h1>Verification</h1>
+              <ol>
+                  <li><a [routerLink]="['/Home']">Home</a></li>
+                  <li>Verification</li>
+              </ol>
+          </div>
+      </div>
+  </section><!-- End Breadcrumbs -->
+  <section>
+    <div *ngIf="!IsVerifiedEmail && Id == 0" class="container mb-3">
+      <p>Kindly check your email for verificaiton, <a href="#" class="nav-link" data-bs-dismiss="modal" data-bs-toggle="modal"
+        data-bs-target="#Modal" (click)="ResendVerificationEmail()">Resend verificaiton email.</a></p>
+    </div>
+
+    <div *ngIf="IsVerifiedEmail" class="alert alert-success" role="alert">
+      Your email has been successfully confirmed. Please <span style="cursor: pointer;text-decoration: underline;" (click)="openLoginPopup('1')"> click here to log in. </span>
+  </div>
+  </section>

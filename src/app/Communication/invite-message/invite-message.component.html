@@ -1,0 +1,38 @@
+<div class="card card-success">
+  <div class="card-header"><h5>Invite Attorney</h5>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <form>
+    <div class="card-body">
+      <div class="attorney-list">
+      <div class="form-group">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th style="width: 5px;"></th>
+              <th style="width: 85px;">Selectd Attorney</th>
+              <th style="width: 10px;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>Attorney Name</td>
+              <td><span class="pointer text-danger"><i class="fa fa-trash-o"></i></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea class="form-control" row="3"></textarea>
+      </div>
+    </div>
+    <div class="card-footer text-center">
+      <button type="submit" class="btn btn-success">Invite</button>
+    </div>
+  </form>
+</div>

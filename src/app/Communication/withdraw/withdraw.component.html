@@ -1,0 +1,21 @@
+<div class="card card-danger">
+  <div class="card-header">
+    <h5>Withdraw Attorney</h5>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  
+    <div class="card-body">
+      <h5 class="card-title"><span *ngIf="appearanceStatus == 'Approved'">You have been approved for this application! </span>Are you sure you want to withdraw the application?</h5>
+      <br />
+      <div class="form-group">
+        <label>Message to Employer</label>
+        <textarea class="form-control" [(ngModel)]="Message" row="3"></textarea>
+      </div>
+    </div>
+    <div class="card-footer text-center">
+      <button type="submit" class="btn btn-outline-danger" (click)="WithdrawByAttorney()">Submit</button>
+    </div>
+  
+</div>

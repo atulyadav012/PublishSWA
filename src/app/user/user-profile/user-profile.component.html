@@ -1,0 +1,868 @@
+<!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs mb-3">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Profile</h1>
+      <ol>
+        <li><a [routerLink]="['/dashboard']">Home</a></li>
+        <li>Profile</li>
+      </ol>
+    </div>
+  </div>
+</section><!-- End Breadcrumbs -->
+<section>
+  <div class="container mb-3">
+    <div class="col-lg-6 m-auto">
+      <div class="accordion" id="profileAccordation">
+        <!--following 1 line modified by atul on 12 may 22 for making stripe connect mandatory-->
+        <form [formGroup]="userProfileForm" (ngSubmit)="onStripeSubmit()">
+          <div class="accordion-item active">
+            <h2 class="accordion-header bg-info" id="headingProfileType">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseProfileType" aria-expanded="true" aria-controls="collapseProfileType">
+                <i class="fa fa-check-circle fs-3"
+                   [ngClass]="IndividualCheckChecked || AttorneyCheckChecked || LawFirmCheckChecked ?  'text-success fa-check-circle' : 'text-danger fa-circle-o'"></i> &nbsp; Profile Information
+              </button>
+            </h2>
+            <div id="collapseProfileType" class="accordion-collapse" aria-labelledby="headingProfileType"
+                 data-bs-parent="#profileAccordation">
+              <div *ngIf="!isSubUser" class="accordion-body">
+                <div class="row">
+                  <div *ngIf="!disableEmployerAttorney" class="form-check form-switch">
+                    <input class="form-check-input" formControlName="LawFirmCheckChecked" type="checkbox"
+                           id="LawFirmCheckChecked" (click)="LawFirmCheckCheckedchange($event)">
+                    <label class="form-check-label" for="LawFirmCheckChecked">
+                      A Law-firm/Attorney
+                      looking to hire Attorney?
+                    </label>
+                  </div>
+                  <div *ngIf="!disableEmployerAttorney" class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" formControlName="AttorneyCheckChecked"
+                           id="AttorneyCheckChecked" (click)="AttorneyCheckCheckedchange($event)">
+                    <label class="form-check-label" for="AttorneyCheckChecked">
+                      An Attorney looking to be hired for Appearances?
+                    </label>
+                  </div>
+                  <div *ngIf="!disableEmployerAttorney && !disableInvidual" class="row col-12">OR</div>
+                  <div *ngIf="!disableInvidual" class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="IndividualCheckChecked"
+                           formControlName="IndividualCheckChecked" (click)="IndividualCheckCheckedchange($event)">
+                    <label class="form-check-label" for="IndividualCheckChecked">
+                      An Individual looking to hire Attorney?
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <!--Code modified by atul on dated 20 apr 22 for bug 491: Profile - If any mandatory fields are pending, the page should be positioned to show the pending fields (changed id of div)-->
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" id="btncollapseOne">
+                <i class="fa fa-check-circle fs-3"
+                   [ngClass]="f.firstName.errors || f.lastName.errors || f.mobileNo.errors ? 'text-danger fa-circle-o' : 'text-success fa-check-circle'"></i> &nbsp; General Information
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                 data-bs-parent="#profileAccordation">
+              <div class="accordion-body">
+                <div class="row">
+                  <div class="col-md-3">
+                    <!-- <img class="profile-user-img img-responsive img-circle mr-2" src="assets/img/business_user-128x128.png"
+                         alt="User profile picture"> -->
+                         <div class="avatar-profile" style="margin:auto;"> {{getInitials(userInfo?.firstName,userInfo?.lastName)}}</div>
+                  </div>
+                  <div class="col-md-9">
+                    <div class="row ml-1"><label>Name</label></div>
+                    <div class="input-group">
+                      <!--<select id="Select1" class="form-control mr-1" style="max-width:70px;">
+                  <option selected>Mr.</option>
+                  <option selected>Miss.</option>
+                  <option selected>M/S.</option>
+                </select>
+                &nbsp;-->
+                      <input type="text" formControlName="firstName" class="form-control mr-1"
+                             [ngClass]="{ 'is-invalid': (submitted && f.firstName.errors) }" id="firstName"
+                             placeholder="First Name">
+                      <div *ngIf="(submitted || f.firstName.errors)" class="invalid-feedback">
+                        <div *ngIf="f.firstName.errors?.required">Please enter first name.</div>
+                      </div>
+                      <input type="text" formControlName="lastName" class="form-control"
+                             [ngClass]="{ 'is-invalid': (submitted && f.lastName.errors) }" id="lastname"
+                             placeholder="Last Name">
+                      <div *ngIf="(submitted || f.lastName.errors)" class="invalid-feedback">
+                        <div *ngIf="f.lastName.errors?.required">Please enter last name.</div>
+                      </div>
+                    </div>
+                    <!-- <div class="input-group mt-1">
+                <input type="text" formControlName="middleName" class="form-control mr-1" id="middlename"
+                       placeholder="Middle Name">&nbsp;
+                <input type="text" formControlName="lastName" class="form-control"
+                       [ngClass]="{ 'is-invalid': (submitted && f.lastName.errors) }" id="lastname"
+                       placeholder="Last Name">
+                <div *ngIf="(submitted || f.lastName.errors)" class="invalid-feedback">
+                  <div *ngIf="f.lastName.errors?.required">Please enter last name.</div>
+                </div>
+              </div> -->
+                    <div class="form-group">
+                      <label class="ml-2">Alternate Email</label>
+                      <label class="pull-right text-secondary small">(optional)</label>
+                      <input type="email" formControlName="alternateEmail"
+                             [ngClass]="{ 'is-invalid': (submitted && f.alternateEmail.errors) }" class="form-control mr-1"
+                             id="alternateEmail">
+                      <div *ngIf="(submitted || f.alternateEmail.errors)" class="invalid-feedback">
+                        <div *ngIf="f.alternateEmail.errors?.email">
+                          Please enter valid email.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="ml-2">Mobile No</label>
+                      <div class="row">
+                        <div class="col-12">
+                          <input type="text" formControlName="mobileNo"
+                                 [ngClass]="{ 'is-invalid': (submitted && f.mobileNo.errors) }" class="form-control mr-1"
+                                 id="mobileNo" required>
+                          <div *ngIf="(submitted || f.mobileNo.errors)" class="invalid-feedback">
+                            <div *ngIf="f.mobileNo.errors?.required">
+                              Mobile Number is required.
+                            </div>
+                            <div *ngIf="f.mobileNo.errors?.pattern">Please, Enter 10 digit Mobile Number.</div>
+                          </div>
+                        </div>
+                        <!-- <div class="col-2"><a>Verify</a></div> -->
+                        <!-- Temperory removed Verify link, by Nirav Dt.: 04-Apr-2022.
+                    This option will be implimented once SMS gateway implimented in system.
+                  Kindly don't remove this code. -->
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="ml-2">Business No</label>
+                      <label class="pull-right text-secondary small">(optional)</label>
+                      <input type="text" formControlName="businessNo"
+                             [ngClass]="{ 'is-invalid': (submitted && f.businessNo.errors) }" class="form-control mr-1"
+                             id="businessNo">
+                      <div *ngIf="(submitted || f.businessNo.errors)" class="invalid-feedback">
+                        <div *ngIf="f.businessNo.errors?.pattern">Please, Enter 10 digit Mobile Number.</div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!isSubUser" class="accordion-item">
+            <h2 class="accordion-header" id="headingAddress">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseAddress" aria-expanded="false" aria-controls="collapseAddress" id="btnCollapseAddress">
+                <i class="fa fa-check-circle fs-3"
+                   [ngClass]="f.Physicaladdress1.errors || f.Physicalstate.errors || f.Physicalcounty.errors || f.Physicalcity.errors || f.Physicalzipcode.errors ||
+                f.Billingaddress1.errors || f.Billingstate.errors || f.Billingcounty.errors || f.Billingcity.errors || f.Billingzipcode.errors ? 'text-danger fa-circle-o' : 'text-success fa-check-circle'"></i> &nbsp; Address Details
+              </button>
+            </h2>
+            <div id="collapseAddress" class="accordion-collapse collapse" aria-labelledby="headingAddress"
+                 data-bs-parent="#profileAccordation">
+              <div class="accordion-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="row ml-1 mt-1"><label><b>Physical Address</b></label></div>
+                    <div class="input-group">
+                      <input type="text" id="Physicaladdress1" placeholder="Street Address" formControlName="Physicaladdress1"
+                             [ngClass]="{ 'is-invalid': submitted && f.Physicaladdress1.errors }"
+                             class="form-control" />
+                      <div *ngIf="(submitted || f.Physicaladdress1.errors)" class="invalid-feedback">
+                        <div *ngIf="f.Physicaladdress1.errors?.required">Address is required</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="pull-right text-secondary small">(optional)</label>
+                      <input type="text" id="Physicaladdress2" placeholder="Suite No / Floor No " formControlName="Physicaladdress2"
+                             class="form-control" />
+                    </div>
+                    <div class="row mt-1">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>State</label>
+                          <select id="Physicalstate" class="form-control" formControlName="Physicalstate"
+                                  [ngClass]="{ 'is-invalid': submitted && f.Physicalstate.errors }"
+                                  (change)="onSelectedState($event.target)">
+                            <option value="">Select State</option>
+                            <option *ngFor="let state of stateList" value="{{state?.autoId}}">
+                              {{state?.stateName}}
+                            </option>
+                          </select>
+                          <div *ngIf="(submitted || f.Physicalstate.errors)" class="invalid-feedback">
+                            <div *ngIf="f.Physicalstate.errors?.required">State is required</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>County</label>
+                          <select id="Physicalcounty" (change)="onSelectedCounty($event.target)" class="form-control"
+                                  [ngClass]="{ 'is-invalid': submitted && f.Physicalcounty.errors }"
+                                  formControlName="Physicalcounty">
+                            <option value="">Select County</option>
+                            <option *ngFor="let county of countyList" value="{{county?.autoId}}">
+                              {{county?.countyName}}
+                            </option>
+                          </select>
+                          <div *ngIf="(submitted || f.Physicalcounty.errors)" class="invalid-feedback">
+                            <div *ngIf="f.Physicalcounty.errors?.required">County is required</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-1">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="ml-1">City</label>
+                          <select id="Physicalcity" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Physicalcity.errors }"
+                                  formControlName="Physicalcity">
+                            <option value="">Select City</option>
+                            <option *ngFor="let city of cityList" value="{{city?.autoId}}">
+                              {{city?.cityName}}
+                            </option>
+                          </select>
+                          <div *ngIf="(submitted || f.Physicalcity.errors)" class="invalid-feedback">
+                            <div *ngIf="f.Physicalcity.errors?.required">City is required</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Zip Code</label>
+                          <input type="text" class="form-control"
+                                 [ngClass]="{ 'is-invalid': submitted && f.Physicalzipcode.errors }"
+                                 formControlName="Physicalzipcode" id="Physicalzipcode">
+                          <div *ngIf="(submitted || f.Physicalzipcode.errors)" class="invalid-feedback">
+                            <div *ngIf="f.Physicalzipcode.errors?.required">Zip Code is required</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="row ml-1 mt-1">
+                      <div class="float-start col-sm-6"><label><b>Billing Address</b></label></div>
+                      <div class="right  col-sm-6">
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" formControlName="SameAddress" (change)="sameAddressChange()"
+                                 type="checkbox" id="SameAsBillingCheckChecked">
+                          <label class="form-check-label" for="SameAsBillingCheckChecked">
+                            Same as Physical
+                            Address
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="input-group">
+                      <input type="text" placeholder="Street Address" id="Billingaddress1" formControlName="Billingaddress1"
+                             [ngClass]="{ 'is-invalid': submitted && f.Billingaddress1.errors }"
+                             class="form-control" />
+                      <div *ngIf="(submitted || f.Billingaddress1.errors)" class="invalid-feedback">
+                        <div *ngIf="f.Billingaddress1.errors?.required">Billing Address is required</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="pull-right text-secondary small">(optional)</label>
+                      <input type="text" id="Billingaddress2" placeholder="Suite No / Floor No" formControlName="Billingaddress2"
+                             class="form-control" />
+                    </div>
+                    <div class="row mt-1">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>State</label>
+                          <select id="Billingstate" class="form-control" formControlName="Billingstate"
+                                  [ngClass]="{ 'is-invalid': submitted && f.Billingstate.errors }"
+                                  (change)="onBillingSelectedState($event.target)">
+                            <option value="">Select State</option>
+                            <option *ngFor="let state of stateList" value="{{state?.autoId}}">
+                              {{state?.stateName}}
+                            </option>
+                          </select>
+                          <div *ngIf="(submitted || f.Billingstate.errors)" class="invalid-feedback">
+                            <div *ngIf="f.Billingstate.errors?.required">State is required</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>County</label>
+                          <select id="Billingcounty" (change)="onBillingSelectedCounty($event.target)"
+                                  [ngClass]="{ 'is-invalid': submitted && f.Billingcounty.errors }"
+                                  formControlName="Billingcounty" class="form-control">
+                            <option value="">Select County</option>
+                            <option *ngFor="let county of BillingcountyList" value="{{county?.autoId}}">
+                              {{county?.countyName}}
+                            </option>
+                          </select>
+                          <div *ngIf="(submitted || f.Billingcounty.errors)" class="invalid-feedback">
+                            <div *ngIf="f.Billingcounty.errors?.required">County is required</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-1">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="ml-1">City</label>
+                          <select id="Billingcity" class="form-control"
+                                  [ngClass]="{ 'is-invalid': submitted && f.Billingcity.errors }"
+                                  formControlName="Billingcity">
+                            <option value="">Select City</option>
+                            <option *ngFor="let city of BillingcityList" value="{{city?.autoId}}">
+                              {{city?.cityName}}
+                            </option>
+                          </select>
+                          <div *ngIf="(submitted || f.Billingcity.errors)" class="invalid-feedback">
+                            <div *ngIf="f.Billingcity.errors?.required">City is required</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Zip Code</label>
+                          <input type="text" class="form-control"
+                                 [ngClass]="{ 'is-invalid': submitted && f.Billingzipcode.errors }"
+                                 formControlName="Billingzipcode" id="Billingzipcode">
+                          <div *ngIf="(submitted || f.Billingzipcode.errors)" class="invalid-feedback">
+                            <div *ngIf="f.Billingzipcode.errors?.required">Zip Code is required</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--following 1 line modified by atul on 12 may 22 on nirav's request-->
+          <div *ngIf="LawFirmCheckChecked || AttorneyCheckChecked" class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" id="btncollapseTwo">
+                <i class="fa fa-check-circle fs-3"
+                   [ngClass]="f.firmName.errors ? 'text-danger fa-circle-o' : 'text-success fa-check-circle'"></i> &nbsp; Law firm Information
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                 data-bs-parent="#profileAccordation">
+              <div class="accordion-body">
+                <div class="row">
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label>Law firm name</label>
+                      <label *ngIf="isOptional" class="pull-right text-secondary small">(optional)</label>
+                      <input [readonly]="isSubUser" type="text" [ngClass]="{ 'is-invalid': submitted && f.firmName.errors }" formControlName="firmName"
+                             class="form-control mr-1" id="firmName">
+                      <div *ngIf="(submitted || f.firmName.errors)" class="invalid-feedback">
+                        <div *ngIf="f.firmName.errors?.required">Firm Name is required</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Website</label>
+                      <label class="pull-right text-secondary small">(optional)</label>
+                      <input [readonly]="isSubUser" type="text" formControlName="website" class="form-control mr-1" id="website">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="AttorneyCheckChecked && !isSubUser" class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" id="btncollapseThree">
+                <i class="fa fa-check-circle fs-3"
+                   [ngClass]="f.hourlyratemin.errors ? 'text-danger fa-circle-o' : 'text-success fa-check-circle'"></i> &nbsp; Profile Details
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                 data-bs-parent="#profileAccordation">
+              <div class="accordion-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Years of Exp</label>
+                          <label class="pull-right text-secondary small">(optional)</label>
+                          <input type="text" formControlName="yearsofexperience" class="form-control" id="yearsofexperience">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="small">Hourly Rate (Min)</label>
+                          <!-- <label class="pull-right text-secondary small">(optional)</label> -->
+                          <input type="text" [ngClass]="{ 'is-invalid': submitted && f.hourlyratemin.errors }" formControlName="hourlyratemin" class="form-control" id="hourlyratemin">
+                          <div *ngIf="(submitted || f.hourlyratemin.errors)" class="invalid-feedback">
+                            <div *ngIf="f.hourlyratemin.errors?.required">Hourly Rate is required</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="pt-lg-4">
+                          <div class="form-group form-check form-switch">
+                            <input class="form-check-input" formControlName="ratenegotiable" type="checkbox"
+                                   id="RateNegotiablechecked" (click)="RateNegotiablechecked()">
+                            <label class="form-check-label" for="RateNego">
+                              Rate Negotiable
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="small">Hourly Rate (Max)</label>
+                    <input type="text" [ngClass]="{ 'is-invalid': submitted && f.hourlyratemax.errors }" formControlName="hourlyratemax" class="form-control" id="hourlyratemax">
+                    <div *ngIf="(submitted || f.hourlyratemax.errors)" class="invalid-feedback">
+                      <div *ngIf="f.hourlyratemax.errors?.required">Hourly Rate is required</div>
+                    </div>
+                  </div>
+                </div> -->
+                    </div>
+                    <div class="row">
+                      <!-- <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="small">Travel Distance</label>
+                    <label class="pull-right text-secondary small">(optional)</label>
+                    <input type="text" formControlName="traveldistance" class="form-control" id="traveldistance">
+                  </div>
+                </div> -->
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="small">Language</label>
+                          <label class="pull-right text-secondary small">(optional)</label>
+                          <ng-select [multiple]="true" formControlName="Language">
+                            <ng-option *ngFor="let lang of languages" [value]="lang.recordName">
+                              {{lang.recordName}}
+                            </ng-option>
+                            <!-- <ng-option [value]="'custnpm install --save @ng-select/ng-option-highlightom'">Custom</ng-option> -->
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="ml-1">Brief Bio-data</label>
+                          <label class="pull-right text-secondary small">(optional)</label>
+                          <textarea rows="1" formControlName="BriefBio" id="BriefBio" class="form-control"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Code commented by nirav dt.; 09-Apr-2022 as client want to remove this fields
+              General availability and General Availability Notes are redundant
+              Fig 16 When I sign out and and sign in again, the profil shows "null" or A for General availability. Can we remove "null" and the A* on these blocks -->
+                    <!-- <div class="row">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label class="ml-1">General availability(Days)</label>
+                    <ng-select [multiple]="true" formControlName="GeneralAvailabelityDay">
+                      <ng-option *ngFor="let day of Days" [value]="day.value">
+                        {{day.text}}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="ml-1">General availability: M/F AM/PM</label>
+                    <select id="GeneralAvailabelity" formControlName="GeneralAvailabelity" class="form-control">
+                      <option selected value="AM">AM</option>
+                      <option value="PM">PM</option>
+                      <option value="AM/PM">AM/PM</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="ml-1">General availability Notes</label>
+                <label class="pull-right text-secondary small">(optional)</label>
+                <input type="text" formControlName="GeneralAvailabilityNote" class="form-control mr-1" id="GeneralAvailabilityNote">
+              </div> -->
+
+                    <div class="form-group mt-1">
+                      <label class="mr-2 ml-1">Resume Upload</label>
+                      <input type="file" class="form-control-file" (change)="uploadResume($event)"
+                             id="exampleFormControlFile1">
+                    </div>
+                    <!-- <span *ngIf="ResumePath">Resume uploaded : {{ResumePath}}</span> -->
+                    <table *ngIf="resume != null" class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>File Name</th>
+                          <th>File Type</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <td style="cursor: pointer;"> <p (click)="DownloadResume(resume.name)">{{resume.name}}</p></td>
+                      <td>{{resume.type}}</td>
+                      <td><span class="pointer text-danger"><i class="fa fa-trash-o" (click)="DeleteResume()"></i></span></td>
+                      </tbody>
+
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="(LawFirmCheckChecked || AttorneyCheckChecked) && !isSubUser" class="accordion-item">
+            <h2 class="accordion-header" id="headingPracticeArea">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapsePracticeArea" aria-expanded="false" aria-controls="collapsePracticeArea" id="btncollapsePracticeArea">
+                <i class="fa fa-check-circle fs-3"
+                   [ngClass]="PracticeAreas.length == 0 && AttorneyCheckChecked ? 'text-danger fa-circle-o' : 'text-success fa-check-circle'"></i> &nbsp; Paractice Areas
+              </button>
+            </h2>
+            <div id="collapsePracticeArea" class="accordion-collapse collapse" aria-labelledby="headingPracticeArea"
+                 data-bs-parent="#profileAccordation">
+              <div class="accordion-body">
+                <!--following 1 line added by atul on 12 may 22 for making stripe connect mandatory-->
+                <input type="hidden" formControlName="hidIsPracticeAreas" />
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="input-group mt-1">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th width="45%">Practice Area</th>
+                            <th width="40%">
+                              Brief Description <span class="right text-secondary small">(optional)</span>
+                            </th>
+                            <th width="15%">
+                              <i class="fa fa-cogs"></i>&nbsp;
+                              <button type="button" class="btn btn-sm btn-outline-info" popoverTitletitle="Important Instructions" ngbPopover="You must press (+) button to add practice area."> <i class="fa fa-info-circle"></i></button>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <!-- <ng-container formArrayName="practice">
+                    <ng-container *ngFor="let practice of getControls();let i = index;"> -->
+                          <tr>
+                            <td>
+                              <!--following 1 line modified by atul on 12 may 22 for making stripe connect mandatory-->
+                              <select id="practiceDescTextbox" formControlName="practiceArea" class="form-control mr-1">
+                                <option value="0">Select Practice Area</option>
+                                <option *ngFor="let casetype of casetypes" [value]="casetype.autoId">
+                                  {{casetype.practiceArea}}
+                                </option>
+                              </select>
+                            </td>
+                            <td>
+                              <input type="text" formControlName="practiceDesc" class="form-control"
+                                     placeholder="Descriptioin #">
+                            </td>
+                            <td>
+                              <!-- <img src="assets/img/edit.png" />&nbsp;&nbsp; -->
+                              <!-- <img src="assets/img/Empty dustbin.png" (click)="onRemoveRow(i)" /> -->
+                              <button type="button" class="btn btn-secondary alignment" (click)="AddMore()">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                              </button>
+                            </td>
+                          </tr>
+                          <!-- </ng-container>
+                    </ng-container> -->
+                        </tbody>
+
+                      </table>
+                      <table class="table table-bordered">
+                        <tbody>
+                          <tr *ngFor="let area of PracticeAreas">
+                            <td width="45%" class="text-right">
+                              {{area.practiceArea}}
+                            </td>
+                            <td width="40%" class="text-right">
+                              {{area.briefDescription}}
+                            </td>
+                            <td width="15%" class="text-right">
+                              <span class="pointer text-danger">
+                                <i class="fa fa-trash-o"
+                                   (click)="DeletePracticeArea(area)"></i>
+                              </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- code modified by atul on dated 19 apr 22 for task 490:Remove BAR# section from Employer profile -->
+          <div *ngIf="AttorneyCheckChecked" class="accordion-item">
+            <h2 class="accordion-header" id="headingBarDetails">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseBarDetails" aria-expanded="false" aria-controls="collapseBarDetails" id="btncollapseBarDetails">
+                <i class="fa fa-check-circle fs-3"
+                   [ngClass]="Bars.length == 0 ? 'text-danger fa-circle-o' : 'text-success fa-check-circle'"></i> &nbsp; Bar Details
+              </button>
+            </h2>
+            <div id="collapseBarDetails" class="accordion-collapse collapse" aria-labelledby="headingBarDetails"
+                 data-bs-parent="#profileAccordation">
+              <div class="accordion-body">
+                <!--following 1 line added by atul on 12 may 22 for making stripe connect mandatory-->
+                <input type="hidden" formControlName="hidIsBars" />
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="input-group mt-1">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th width="45%">State</th>
+                            <th width="40%">Bar #</th>
+                            <th width="15%">
+                              <i class="fa fa-cogs"></i>
+                              &nbsp;
+                              <button type="button" class="btn btn-sm btn-outline-info" popoverTitletitle="Important Instructions" ngbPopover="You must press (+) button to add bard details."> <i class="fa fa-info-circle"></i></button>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <!-- <ng-container formArrayName="bar">
+                    <ng-container *ngFor="let bar of getBarControls();let i = index;"> -->
+                          <tr>
+                            <td>
+                              <!--following 1 line modified by atul on 12 may 22 for making stripe connect mandatory-->
+                              <select id="barNoTextBox" formControlName="stateMasterId" class="form-control mr-1">
+                                <option value="0">Select State</option>
+                                <option *ngFor="let state of stateList" value="{{state?.autoId}}">
+                                  {{state?.stateName}}
+                                </option>
+                              </select>
+                            </td>
+                            <td>
+                              <input type="text" class="form-control" formControlName="barNo"
+                                     placeholder="BAR #">
+                            </td>
+                            <td>
+                              <button type="button" class="btn btn-secondary alignment" (click)="AddMoreBar()">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                              </button>
+                              <!-- <img src="assets/img/edit.png" />&nbsp;&nbsp; -->
+                              <!-- <img src="assets/img/Empty dustbin.png" (click)="onBarRemoveRow(i)" /> -->
+                            </td>
+                          </tr>
+                          <!-- </ng-container>
+                    </ng-container> -->
+                        </tbody>
+
+                      </table>
+                      <table class="table table-bordered">
+                        <tbody>
+                          <tr *ngFor="let bar of Bars">
+                            <td width="45%" class="text-right">
+                              {{bar.stateName}}
+                            </td>
+                            <td width="40%" class="text-right">
+                              {{bar.barNo}}
+                            </td>
+                            <td width="15%" class="text-right">
+                              <span class="pointer text-danger">
+                                <i class="fa fa-trash-o"
+                                   (click)="DeleteBar(bar)"></i>
+                              </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div *ngIf="ProfileType == 'EA' || ProfileType == 'A'" class="m-1">Click <a href="https://www.americanbar.org/groups/legal_services/flh-home/flh-bar-directories-and-lawyer-finders/" target="_blank">here</a> to verify Attorney's Bar Number</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!--following form tag modified by atul on 12 may 22 for making stripe connect mandatory-->
+        <form [formGroup]="stripeForm" (ngSubmit)="onStripeSubmit()">
+          <div *ngIf="(AttorneyCheckChecked && !isSubUser) || ((IndividualCheckChecked || LawFirmCheckChecked) && !isSubUser)" class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" id="btncollapseFour">
+                <!-- Bank Information    -->
+                <i class="fa fa-check-circle fs-3"
+                   [ngClass]="(!IsStripeConnected && AttorneyCheckChecked) || (((IndividualCheckChecked || LawFirmCheckChecked) && !isSubUser) && !IsPaymentSetupCompleted) ? 'text-danger fa-circle-o' : 'text-success fa-check-circle'"></i> &nbsp; Stripe Account
+              </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                 data-bs-parent="#profileAccordation">
+              <div class="accordion-body">
+                <div *ngIf="AttorneyCheckChecked" class="col-md-12 text-center ">
+                  <!-- Code commented by atul on 30 jan 22 for using stripe instead of bank information -->
+                  <input type="hidden" formControlName="hidIsStripeConnected" />
+                  <div *ngIf="!IsStripeConnected" class="row">
+                    <div class="col-md-8">
+                      <label class="fw-bold py-3">
+                        Business Type
+                      </label>
+                      <label class="p-2">
+                        <input type="radio" id="rbIndividual" value="individual" formControlName="businessType">
+                        <span> Individual</span>
+                      </label>
+                      <label class="p-2">
+                        <input type="radio" value="company" formControlName="businessType">
+                        <span> Company</span>
+                      </label>
+                    </div>
+                    <div class="col-md-4 py-3">
+                      <input type="button" class="btn btn-success" value="Connect to stripe"
+                             (click)="ConnectToStripeClicked()" />
+                    </div>
+                  </div>
+                  <div class="col-md-12" *ngIf="IsStripeConnected">
+                    <span class="btn-success">Connected.</span>
+                    <span> <a href="https://dashboard.stripe.com">Go to stripe</a></span>
+                  </div>
+                  <div *ngIf="IsStripeConnecting">
+                    You are being redirected to Stripe. It may take a few seconds.
+                  </div>
+                  <div *ngIf="(submitted && sf.hidIsStripeConnected.errors)" class="text-danger text-end">
+                    <div *ngIf="sf.hidIsStripeConnected.errors">Please connect to stripe.</div>
+                  </div>
+                </div>
+
+                <div class="col-md-12" *ngIf="(IndividualCheckChecked || LawFirmCheckChecked) && !isSubUser">
+                  <hr *ngIf="AttorneyCheckChecked" />
+                  <h5>
+                    Auto debit payment settings:
+                  </h5>
+                  <input type="hidden" formControlName="hidIsPaymentSetupCompleted" />
+                  <div class="col-md-12 text-center ">
+                    <div *ngIf="!IsPaymentSetupCompleted" class="row">
+                      <!-- <div class="row"> -->
+                      <div class="col-8 py-3 ">
+                        <select id="rbCards" class="form-control m-0" formControlName="paymentMethod">
+                          <option value="">Select Payment Method Type</option>
+                          <option value="1">Credit Card / Debit Card</option>
+                          <option value="2">ACH / Bank Account</option>
+                        </select>
+                      </div>
+                      <div class="col-4 py-3">
+                        <input type="button" class="btn btn-success" value="     Start setup    "
+                               (click)="FuturePaymentSetupClicked()" />
+                      </div>
+                      <!-- </div> -->
+                    </div>
+                    <div *ngIf="IsPaymentSetupCompleted" class="row">
+                      <div class="col-md-12">
+                        <span class="btn-success">Completed. </span> &nbsp;&nbsp;
+                        <span class="pointer text-danger">
+                          <i class="fa fa-trash-o"
+                             (click)="RemovePayMethodClicked()" title="Remove method (Change)"></i>
+                        </span>
+                      </div>
+                      <div class="col-md-12">
+                        <label *ngIf="CurrentPayMethod == 'card'" class="p-3">
+                          <label class="p-2">
+                            Current Method:
+                          </label>
+                          <span> <b>Card, {{CurrentPayBrand  | titlecase}} ******** {{CurrentPayLastDigits}} </b></span>
+                        </label>
+                        <label *ngIf="CurrentPayMethod == 'us_bank_account'" class="p-3">
+                          <span>
+                            <table style="text-align: left;">
+                              <tr>
+                                <td>
+                                  Current Method
+                                </td>
+                                <td>
+                                  <b>: ACH</b>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Account Type
+                                </td>
+                                <td>
+                                  <b>: {{CurrentPayAcType  | titlecase}}</b>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Bank name
+                                </td>
+                                <td>
+                                  <b>: {{CurrentPayBank  | titlecase}}</b>
+                                </td>
+                              </tr>
+                            </table>
+                          </span>
+                        </label>
+                      </div>
+                      <div>
+                        <!-- <input type="button" class="col-md-6 btn btn-success" value="Remove method (Change)"
+                         (click)="RemovePayMethodClicked()" /> -->
+                      </div>
+                    </div>
+                    <div *ngIf="IsStripeConnecting">
+                      You are being redirected to Stripe. It may take a few seconds.
+                    </div>
+                    <div *ngIf="(submitted && sf.hidIsPaymentSetupCompleted.errors)" class="text-danger text-end">
+                      <div *ngIf="sf.hidIsPaymentSetupCompleted.errors">Please complete auto debit payment setup.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div *ngIf="LawFirmCheckChecked || IndividualCheckChecked || isSubUser" class="accordion-item">
+      <h2 class="accordion-header" id="headingFive">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+           Bank Information  Connect ACH
+        </button>
+      </h2>
+      <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+           data-bs-parent="#profileAccordation">
+        <div class="accordion-body">
+          <div class="col-md-12 text-center ">
+            <input *ngIf="!IsStripeConnected" type="button" class="col-md-6 btn btn-success" value="Connect to stripe" (click)="ConnectToStripeClicked()" />
+            <span *ngIf="IsStripeConnected" class="btn-success">Connected.</span>
+            <div class="form-group">
+              <label class="ml-1">Bank routing number</label>
+              <input type="text" class="form-control mr-1" id="BankroutingNo">
+            </div>
+            <div class="form-group">
+              <label class="ml-1">Account Holder name</label>
+              <input type="text" class="form-control mr-1" id="AccountHoldername">
+            </div>
+            <div class="form-group">
+              <label class="ml-1">Bank account number</label>
+              <input type="text" class="form-control mr-1" id="Bankaccountnumber">
+            </div>
+            <div class="form-group">
+              <label class="ml-1">Re-enter Bank account number</label>
+              <input type="text" class="form-control mr-1" id="ReenterBankaccountnumber">
+            </div>
+            <div class="form-group">
+                <label class="ml-1">Bank Name</label>
+                <input type="text" class="form-control mr-1" id="BankName">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+          <div class="row">
+            <div class="text-center mt-3">
+              <input type="submit" class="btn btn-success" value="Udpate" />&nbsp;
+              <a href="dashboard.html" class="btn btn-danger">Cancel</a>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Confirmation dialog -->
+<app-confirm-dialog></app-confirm-dialog>
+
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "ball-clip-rotate-multiple" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>

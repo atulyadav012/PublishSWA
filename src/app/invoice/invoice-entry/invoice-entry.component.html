@@ -1,0 +1,109 @@
+    <!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs mb-3">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Invoice Entry</h1>
+      <ol>
+        <li><a routerLink="/dashboard">Home</a></li>
+        <li><a routerLink="'/Invoice-list'">Invoice</a></li>
+        <li>Invoice Entry</li>
+      </ol>
+    </div>
+  </div>
+</section><!-- End Breadcrumbs -->
+<section>
+  <div class="container mb-3">
+    <!--Following div modified by atul on 18 may 22 on nirav's request-->
+    <div class="row">
+      <div class="col-md-6 m-auto">
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3>Invoice Details  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 
+               Version: {{invoiceVersion}}</h3>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
+              
+                <div class="form-group" >
+                  <label for="inputAddress">Invoice Number</label>
+                  <input type="text" formControlName="invoiceNo" class="form-control" id="inputAddress" placeholder="Invoice number" readonly>
+                </div>
+                <!-- <div class="form-group col-md-6">
+                  <label for="inputAddress">Invoice Version</label>
+                  {{invoiceVersion}}
+                </div> -->
+                <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="inputAddress">Invoice Date</label>
+                  <input type="Date" formControlName="invoiceDate" class="form-control" id="inputAddress" placeholder="Invoice Date" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="inputAddress">Invoice Due Date</label>
+                  <input type="Date" formControlName="invoiceDueDate" class="form-control" id="inputAddress" placeholder="Invoice Due Date" readonly>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-3">
+                    <label for="inputAddress">Hourly Rate</label>
+                    <input type="number" formControlName="hourlyRate" class="form-control" id="inputAddress" placeholder="Hourly Rate" readonly>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="inputAddress">Hours</label>
+                    <input type="number" formControlName="hours" (change)="calculateTotal()" (keypress)="decimalFilter($event)" class="form-control" id="inputAddress" placeholder="Hours">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="inputAddress">Minutes</label>
+                    <!-- <input type="number" formControlName="hours" (change)="calculateTotal()" class="form-control" id="inputAddress" placeholder="Hours"> -->
+                    <select name="Minutes" id="Minutes" (change)="calculateTotal()" formControlName="minutes" class="form-control" >
+                      <option value="0" >0 minutes</option>
+                      <option value="15">15 minutes</option>
+                      <option value="30">30 minutes</option>
+                      <option value="45">45 minutes</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="inputAddress">Adjustment</label>
+                    <input type="number" formControlName="adjustment" (change)="calculateTotal()" class="form-control" id="inputAddress" placeholder="Adjustments">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <!-- <div class="col-md-6">
+                    <label for="inputAddress">Adjustment</label>
+                    <input type="number" formControlName="adjustment" (change)="calculateTotal()" class="form-control" id="inputAddress" placeholder="Adjustments">
+                  </div> -->
+                  <!-- <div class="col-md-6">
+        <label for="inputAddress">Late Payment Charges</label>
+        <input type="number" formControlName="latePayment" (change)="calculateTotal()" class="form-control" id="inputAddress" placeholder="Late Payment Charges">
+      </div> -->
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputAddress">Total</label>
+                <input type="number" formControlName="total" class="form-control" id="inputAddress" placeholder="Total" readonly>
+              </div>
+
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">Remarks</label>
+                <label class="float-end text-secondary">(optional)</label>
+                <textarea class="form-control" formControlName="remarks" id="exampleFormControlTextarea1" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <!--Following 1 line added by atul on 17 may 22 for invoice draft feature-->
+                <button *ngIf="SubmitButtonVisible" type="button" class="btn btn-primary me-2" (click)="SaveDraft()">Save</button> 
+                <button *ngIf="SubmitButtonVisible" type="submit" class="btn btn-primary me-2">Save & Submit</button> 
+                <button type="button" class="btn btn-danger" (click)="BacktoCompleted()">Cancel</button>
+              </div>
+              <div class="form-group">
+                <label><b>Info:</b> Use the <b>Save button</b> to save the invoice as Draft.</label>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "ball-clip-rotate-multiple" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>

@@ -1,0 +1,151 @@
+<!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>{{headerPrefix}}</h1>
+            <ol>
+                <li><a [routerLink]="['/dashboard']">Home</a></li>
+                <li>{{headerPrefix}} </li>
+            </ol>
+        </div>
+    </div>
+</section><!-- End Breadcrumbs -->
+<section>
+    <div class="mb-3">
+        <div class="d-flex" id="wrapper">
+            <app-side-filter *ngIf="appearList && showFilter" [CalledFor]="'Application'"[List]="appearList" (FilteredList)="Filter($event)"></app-side-filter>
+
+            <!-- /#sidebar-wrapper -->
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-top  pt-1 pb-1">
+                    <div class="container-fluid">
+                        <div class="col-md-6">
+                            <button (click)="ShowFilterPane()" class="btn btn-light" id="menu-toggle">
+                                <i class="fa fa-filter"></i>&nbsp;
+                                <span>Filter by</span>
+                            </button>
+                        </div>
+                        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button> -->
+                        <!-- <div class="col-md-6">
+                            <div class="float-end">
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <div class="dropdown">
+                                            <button class="btn btn-light dropdown-toggle" type="button"
+                                                id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                Order by
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                <li><a class="dropdown-item" href="#">Name</a></li>
+                                                <li><a class="dropdown-item" href="#">Date</a></li>
+                                                <li><a class="dropdown-item" href="#">View</a></li>
+                                                <li><a class="dropdown-item" href="#">Rating</a></li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-outline-secondary active">
+                                                <i class="fa fa-th"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary">
+                                                <i class="fa fa-list"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </nav>
+
+
+                <div class="container-fluid">
+                    <div class="row p-2">
+                        <div class="card card-light">
+                            <div class="bg-teal pt-2">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="float-start">
+                                            <p *ngIf="appearList?.length>0">Showing {{appearList?.length}} results <span *ngIf="!fromApplication && ProfileType !='A'">{{Appearance?.stateName}}-{{Appearance?.countyName}} {{Appearance?.courtName}} 
+                                                {{Appearance?.appearanceDateTime | DateFormat}} ${{Appearance?.maxRate ==99999 ? 'neg':Appearance?.maxRate}}<small>/hr</small></span>
+                                            </p>
+                                            <p *ngIf="appearList ==null"> No Record Found</p>
+                                            <!-- Code modified by atul on 13 apr 2022 on mehul's request removed minRate -->                                            
+                                            <p *ngIf="Appearance != null && ProfileType =='A'">
+                                                {{Appearance?.stateName}}-{{Appearance?.countyName}} {{Appearance?.courtName}} 
+                                                {{Appearance?.appearanceDateTime | DateFormat}} ${{Appearance?.maxRate==99999 ? 'neg':Appearance?.maxRate}}<small>/hr</small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"><div class="float-end" (click)="back()" style="cursor: pointer;"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="!fromApplication" class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12" *ngFor="let item of appearList;">
+                            <app-application-card [Applicant]="item" [AppearanceId]="AppearanceId">
+                            </app-application-card>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="fromApplication && ProfileType !='A'" class="container-fluid">
+                    <!--Accordation Coding and desing added by  Niravon 14-Dec-2021 11:18 AM Start-->
+                    <div class="accordion myaccordion" id="applicationsAccordation">
+                        <div class="accordion-item" *ngFor="let item of appearList;">
+                            <h2 class="accordion-header border-bottom"
+                                [attr.id]="item?.appearanceRDTO?.autoId+item.index">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    [attr.data-bs-target]="'#AP'+item?.appearanceRDTO?.autoId+item.index" aria-expanded="true"
+                                    aria-controls="collapseProfileType">
+                                    <!-- Code modified by atul on 6 apr 2022 on mehul's request removed minRate -->
+                                    {{item.appearanceRDTO?.stateName}}-{{item.appearanceRDTO?.countyName}} {{item.appearanceRDTO?.courtName}} 
+                                    {{item.appearanceRDTO?.appearanceDateTime | DateFormat}} ${{item.appearanceRDTO?.maxRate == 99999 ? 'neg':item.appearanceRDTO?.maxRate}}<small>/hr</small>
+                                </button>
+                            </h2>
+                            <div [attr.id]="'AP'+item?.appearanceRDTO?.autoId+item.index" class="accordion-collapse"
+                                [attr.aria-labelledby]="item?.appearanceRDTO?.autoId+item.index"
+                                data-bs-parent="#applicationsAccordation">
+                                <div class="accordion-body">
+                                    <div class="row">
+                                        <ng-container *ngFor="let applicant of item.attorneyRDTO;">
+                                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 border-padding">
+                                                <app-application-card [Applicant]="applicant"
+                                                    [AppearanceId]="item.appearanceRDTO.autoId"></app-application-card>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Sumit's Written Code and Desing-->
+                    <!--Commented by Nirav as design was not proper. on 14-Dec-2021 11:18 AM end-->
+                </div>
+                <div *ngIf="fromApplication && ProfileType =='A'" class="container-fluid">
+                    <div class="row">
+
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 border-padding" *ngFor="let item of appearList;">
+                            <app-application-card [Applicant]="item" [AppearanceId]="item?.autoId">
+                            </app-application-card>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "ball-clip-rotate-multiple" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<app-idle></app-idle>

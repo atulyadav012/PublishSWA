@@ -1,0 +1,210 @@
+<div class="container" [formGroup]="userProfileForm">
+  <div class="text-center">
+    <div class="col-4 m-auto">
+      <img class="profile-user-img img-responsive img-circle mr-2" src="assets/img/business_user-128x128.png"
+           alt="User profile picture">
+    </div>
+    <div><h2>Welcome {{firstName}} {{lastName}}</h2></div>
+    <div>Manage your info, privacy, and security to make Videtur work better for you. </div>
+  </div>
+  <div class="row">&nbsp;</div>
+  <div class="card card-light">
+    <div class="card-header">
+      <h4>Security Settings</h4>
+      <p>These settings are helps you keep your account secure.</p>
+    </div>
+      <!-- following section hided by atul on 12 may 22 on nirav's request -->
+      <div class="card-body" style="display: none;">
+      <!-- <div class="row">
+        <div class="col-11 p-2 border-bottom">
+          <p><b>Enable Activity Logs</b></p><p>This option will help to maintain your activity on Videtur. This logs can not be shared by Videture team or any other user of system. This options will helo employer to keep track of their sub user activity.</p></div>
+          <div class="col-1 p-2 text-center border-bottom"><input class="form-check-input" formControlName="OpenAppearanceCheckChecked" type="checkbox"
+            id="OpenAppearanceCheckChecked" ></div>
+      </div> -->
+      <div class="row" >
+        <div class="col-11 p-2 border-bottom">
+          <p>
+            <b>2FA Authentication</b>&nbsp;
+            <span *ngIf="f.TwoFA.value" class="btn-success m-3">Enabled</span>
+            <span *ngIf="!f.TwoFA.value" class="btn-warning m-3">Disabled</span>
+          </p><p>Your account will be more secure with 2 factor authentication.</p>
+        </div>
+        <div class="col-1 p-2 pt-4 border-bottom">
+          <!-- {{f.TwoFA.value}} -->
+          <input *ngIf="f.TwoFA.value" type="button" class="btn btn-small btn-primary" value="Disable" (click)="ChangeSetting('TwoFA')">
+          <input *ngIf="!f.TwoFA.value" type="button" class="btn btn-small btn-primary" value="Enable" (click)="ChangeSetting('TwoFA')">
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="row">
+        <div class="col">
+          <a [routerLink]="['/change-password']" class="btn btn-primary">Change password</a>
+        </div>        <!--  *ngIf="IsPasswordUpdatedDate == true" -->
+        <div class="col text-end" *ngIf="PasswordUpdatedDate != null">
+          <p class="text-dark">Last updated on {{PasswordUpdatedDate | date:'mediumDate'}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Notification settings for Employer Start -->
+  <div class="card" *ngIf="profileType == 'EA' || profileType == 'E' || profileType == 'I'">
+    <div class="card-header">
+      <div class="card-title"><h3>Notification settings </h3>(Employer)</div>
+    </div>
+    <div class="card-body">
+      <div class="border-bottom p-2">
+        <!-- <h5>Open Appearace</h5> -->
+        <div class="row">
+          <div class="col-11">Open Appearance Related.</div>
+          <div class="col-1 text-center form-check form-switch">
+            <input class="form-check-input" formControlName="OAE" type="checkbox"
+                   id="OAE" (change)="ChangeSetting('OAE')">
+          </div>
+        </div>
+      </div>
+      <div class="border-bottom p-2">
+        <!-- <h5>Application</h5> -->
+        <div class="row">
+          <div class="col-11">Attorney Application Related.</div>
+          <div class="col-1 text-center form-check form-switch">
+            <input class="form-check-input" formControlName="AAE" type="checkbox"
+                   id="AAE" (change)="ChangeSetting('AAE')">
+          </div>
+        </div>
+      </div>
+      <div class="border-bottom p-2">
+        <!-- <h5>Filled Appearance</h5> -->
+        <div class="row">
+          <div class="col-11">Filled Appearance Related.</div>
+          <div class="col-1 text-center form-check form-switch">
+            <input class="form-check-input" formControlName="FAE" type="checkbox"
+                   id="FAE" (change)="ChangeSetting('FAE')">
+          </div>
+        </div>
+      </div>
+      <div class="border-bottom p-2">
+        <!-- <h5>Invoice</h5> -->
+        <div class="row">
+          <div class="col-11">Invoice Related.</div>
+          <div class="col-1 text-center form-check form-switch">
+            <input class="form-check-input" formControlName="INVE" type="checkbox"
+                   id="INVE" (change)="ChangeSetting('INVE')">
+          </div>
+        </div>
+      </div>
+      <div class="border-bottom p-2">
+        <!-- <h5>Closed Appearance</h5> -->
+        <div class="row">
+          <div class="col-11">Closed Appearance Related.</div>
+          <div class="col-1 text-center form-check form-switch">
+            <input class="form-check-input" formControlName="CAE" type="checkbox"
+                   id="CAE" (change)="ChangeSetting('CAE')">
+          </div>
+        </div>
+      </div>
+      <div class="border-bottom p-2">
+        <!-- <h5>Closed Appearance</h5> -->
+        <div class="row">
+          <div class="col-11">Ratings related.</div>
+          <div class="col-1 text-center form-check form-switch">
+            <input class="form-check-input" formControlName="RATE" type="checkbox"
+                   id="RATE" (change)="ChangeSetting('RATE')">
+          </div>
+        </div>
+      </div>
+      <div class="border-bottom p-2" *ngIf="profileType == 'EA' || profileType == 'E'">
+        <!-- <h4>Sub Users Related</h4> -->
+        <div class="row">
+          <div class="col-11">Subusers' Appearances related.</div>
+          <div class="col-1 text-center form-check form-switch">
+            <input class="form-check-input" formControlName="SAE" type="checkbox"
+                   id="SAE" (change)="ChangeSetting('SAE')">
+          </div>
+        </div>
+      </div>
+      <div class="border-bottom p-2" *ngIf="profileType == 'EA' || profileType == 'E'">
+        <!-- <h4>Sub Users Related</h4> -->
+        <div class="row">
+          <div class="col-11">Subusers' Invoices related.</div>
+          <div class="col-1 text-center form-check form-switch">
+            <input class="form-check-input" formControlName="SINVE" type="checkbox"
+                   id="SINVE" (change)="ChangeSetting('SINVE')">
+          </div>
+        </div>
+      </div>
+      <div class="border-bottom p-2">
+        <!-- <h4>Message</h4> -->
+        <div class="row">
+          <div class="col-11">Attorney Communication Related.</div>
+          <div class="col-1 text-center form-check form-switch">
+            <input class="form-check-input" formControlName="MSGE" type="checkbox"
+                   id="MSGE" (change)="ChangeSetting('MSGE')">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Notification settings for Employer End -->
+  <!--Notification settings for Attorney Start -->
+  <div class="card" *ngIf="profileType == 'A'">
+    <div class="card-header">
+      <div class="card-title"><h3>Notification settings </h3>(Attorney)</div>
+    </div>
+    <div class="card-body">
+      <div class="border-bottom p-2">
+        <!-- <h5>New Appearace Posting</h5> -->
+        <div class="row">
+          <div class="col-11">New Appearances related</div>
+          <div class="col-1 text-center form-check form-switch">
+            <input class="form-check-input" formControlName="NAA" type="checkbox"
+                   id="NAA" (change)="ChangeSetting('NAA')">
+          </div>
+        </div>
+      </div>
+      <div class="border-bottom p-2">
+        <!-- <h5>Applied Appearance</h5> -->
+        <div class="row">
+          <div class="col-11">Applied Appearances related.</div>
+          <div class="col-1 text-center form-check form-switch">
+            <input class="form-check-input" formControlName="AAA" type="checkbox"
+                   id="AAA" (change)="ChangeSetting('AAA')">
+          </div>
+        </div>
+      </div>
+      <div class="border-bottom p-2">
+        <!-- <h5>Invoice</h5> -->
+        <div class="row">
+          <div class="col-11">Invoices Related.</div>
+          <div class="col-1 text-center form-check form-switch">
+            <input class="form-check-input" formControlName="INVA" type="checkbox"
+                   id="INVA" (change)="ChangeSetting('INVA')">
+          </div>
+        </div>
+      </div>
+      <div class="border-bottom p-2">
+        <!-- <h5>Closed Appearance</h5> -->
+        <div class="row">
+          <div class="col-11">Ratings related.</div>
+          <div class="col-1 text-center form-check form-switch">
+            <input class="form-check-input" formControlName="CAA" type="checkbox"
+                   id="CAA" (change)="ChangeSetting('CAA')">
+          </div>
+        </div>
+      </div>
+      <div class="border-bottom p-2">
+        <!-- <h4>Message</h4> -->
+        <div class="row">
+          <div class="col-11">Employer Communication related.</div>
+          <div class="col-1 text-center form-check form-switch">
+            <input class="form-check-input" formControlName="MSGA" type="checkbox"
+                   id="MSGA" (change)="ChangeSetting('MSGA')">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Notification settings for Attorney End -->
+</div>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "ball-clip-rotate-multiple" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>

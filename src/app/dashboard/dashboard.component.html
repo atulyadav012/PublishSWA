@@ -1,0 +1,314 @@
+    <!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs mb-3">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Dashboard</h1>
+      <ol>
+        <li><a [routerLink]="['/Dashboard']">Home</a></li>
+        <li>Dashboard</li>
+      </ol>
+    </div>
+  </div>
+</section><!-- End Breadcrumbs -->
+<section>
+  <!-- All card design updated as per client request. Updated by Nirav 15-Apr-2022 -->
+  <div *ngIf="DashboardDetails" class="container mb-3" >
+    <!-- Employer View Link -->
+    <div class="container-fluid" *ngIf="profileType != 'A'">
+      <h3>Appearance</h3>
+      <div class="row">
+        <div class="col-xl-3 col-md-6 col-sm-12">
+          <div class="card bg-whitesmoke border border-2">
+            <div class="card-body">
+              <p class="card-text">Open &nbsp;<a [routerLink]="['/appearance-list','Open']" [ngClass]="{'link-primary':DashboardDetails.appearCountO>0,'link-secondary':DashboardDetails.appearCountO<=0}"><span class="fs-3 font-weight-bold">{{DashboardDetails.appearCountO}}</span></a></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-sm-12">
+          <div class="card bg-whitesmoke border border-2">
+            <div class="card-body">
+              <p class="card-text">Filled/Withdrawn &nbsp;<a [routerLink]="['/appearance-list','Filled']" [ngClass]="{'link-primary':DashboardDetails.appearCountARWID>0,'link-secondary':DashboardDetails.appearCountARWID<=0}"><span class="fs-3 font-weight-bold">{{DashboardDetails.appearCountARWID}}</span></a></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-sm-12">
+          <div class="card bg-whitesmoke border border-2">
+            <div class="card-body">
+              <p class="card-text">Completed &nbsp;<a [routerLink]="['/appearance-list','Completed']" [ngClass]="{'link-primary':DashboardDetails.appearCountCO>0,'link-secondary':DashboardDetails.appearCountCO<=0}"><span class="fs-3 font-weight-bold">{{DashboardDetails.appearCountCO}}</span></a></p>
+            </div>
+          </div>
+        </div>
+        <!--Following 1 section of <div> Code commented by atul on 24 apr 22 on client't request for remove some cards -->
+        <!-- <div class="col">
+          <div class="card border border-2 border-danger">
+            <div class="card-body">
+              <p class="card-text">Cancelled &nbsp;<a [routerLink]="['/appearance-list','Cancelled']" class="link-primary"><span class="fs-3 font-weight-bold">{{DashboardDetails.appearCountCAN}}</span></a></p>
+            </div>
+          </div>
+        </div> -->
+        <div class="col-xl-3 col-md-6 col-sm-12">
+          <div class="card bg-whitesmoke border border-2">
+            <div class="card-body">
+              <p class="card-text">Expired &nbsp;<a [routerLink]="['/appearance-list','Expired']" [ngClass]="{'link-primary':DashboardDetails.appearCountEXP>0,'link-secondary':DashboardDetails.appearCountEXP<=0}"><span class="fs-3 font-weight-bold">{{DashboardDetails.appearCountEXP}}</span></a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid" *ngIf="profileType != 'A'">
+      <h3>Applications</h3>
+        <div class="row">
+          <div class="col-xl-4 col-md-6 col-sm-12">
+            <div class="card bg-whitesmoke border border-2">
+              <div class="card-body">
+                <p class="card-text">Invited Attorneys &nbsp;<a [routerLink]="['/applications','Invited']" [ngClass]="{'link-primary':DashboardDetails.appearAppI>0,'link-secondary':DashboardDetails.appearAppI<=0}"><span class="fs-3 font-weight-bold">{{DashboardDetails.appearAppI}}</span></a></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-md-6 col-sm-12">
+            <div class="card bg-whitesmoke border border-2">
+              <div class="card-body">
+                <p class="card-text">Applied Attorneys &nbsp;<a [routerLink]="['/applications','Applied']" [ngClass]="{'link-primary':DashboardDetails.appearAppA>0,'link-secondary':DashboardDetails.appearAppA<=0}"><span class="fs-3 font-weight-bold">{{DashboardDetails.appearAppA}}</span></a></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-md-6 col-sm-12">
+            <div class="card bg-whitesmoke border border-2">
+              <div class="card-body">
+                <p class="card-text">Invitations Declined &nbsp;<a [routerLink]="['/applications','Rejected']" [ngClass]="{'link-primary':DashboardDetails.appearAppREJ>0,'link-secondary':DashboardDetails.appearAppREJ<=0}"><span class="fs-3 font-weight-bold">{{DashboardDetails.appearAppREJ}}</span></a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div><!-- Employer View Link -->
+    <!-- Attorny View Link -->
+    <div class="container-fluid" *ngIf="profileType == 'A'">
+      <h3>Appearance</h3>
+      <div class="row">
+        <div class="col-xl-2 col-md-6 col-sm-12">
+          <div class="card bg-whitesmoke border border-2">
+            <div class="card-body">
+              <p class="card-text">Invited <a [routerLink]="['/applications','Invited']" [ngClass]="{'link-primary':DashboardDetails.applicationI>0,'link-secondary':DashboardDetails.applicationI<=0}"><span class="fs-3 text-end">{{DashboardDetails.applicationI}}</span></a></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-md-6 col-sm-12">
+          <div class="card bg-whitesmoke border border-2">
+            <div class="card-body">
+              <p class="card-text">Applied <a [routerLink]="['/applications','Applied']" [ngClass]="{'link-primary':DashboardDetails.applicationA>0,'link-secondary':DashboardDetails.applicationA<=0}"><span class="fs-3 text-end">{{DashboardDetails.applicationA}}</span></a></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-md-6 col-sm-12">
+          <div class="card bg-whitesmoke border border-2">
+            <div class="card-body">
+              <p class="card-text">Approved <a [routerLink]="['/appearance-list','Approved']" [ngClass]="{'link-primary':DashboardDetails.applicationAR>0,'link-secondary':DashboardDetails.applicationAR<=0}"><span class="fs-3 text-end">{{DashboardDetails.applicationAR}}</span></a></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-md-6 col-sm-12">
+          <div class="card bg-whitesmoke border border-2">
+            <div class="card-body">
+              <p class="card-text">Not Approved <a [routerLink]="['/applications','UnApproved']" [ngClass]="{'link-primary':DashboardDetails.applicationUR>0,'link-secondary':DashboardDetails.applicationUR<=0}"><span class="fs-3 text-end">{{DashboardDetails.applicationUR}}</span></a></p>
+            </div>
+          </div>
+        </div>
+        <!--Following 3 section of <div> Code commented by atul on 24 apr 22 on client't request for remove some cards -->
+        <!-- 
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="card bg-whitesmoke border border-2">
+            <div class="card-body">
+              <p class="card-text">Withdrawn <a [routerLink]="['/applications','Withdraw']" class="link-primary"><span class="fs-3 text-end">{{DashboardDetails.applicationWID}}</span></a></p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card bg-whitesmoke border border-2">
+            <div class="card-body">
+              <p class="card-text">Expired <a [routerLink]="['/applications','Expired']" class="link-primary"><span class="fs-3 text-end">{{DashboardDetails.applicationEXP}}</span></a></p>
+            </div>
+          </div>
+        </div> -->
+        <!-- following 1 div section added by atul on 7 may 22 on mehul's request -->
+        <div class="col-xl-2 col-md-6 col-sm-12">
+          <div class="card bg-whitesmoke border border-2">
+            <div class="card-body">
+              <p class="card-text">Completed <a [routerLink]="['/appearance-list','Completed']" [ngClass]="{'link-primary':DashboardDetails.applicationCO>0,'link-secondary':DashboardDetails.applicationCO<=0}"><span class="fs-3 text-end">{{DashboardDetails.applicationCO}}</span></a></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-md-6 col-sm-12">
+          <div class="card bg-whitesmoke border border-2">
+            <div class="card-body">
+              <p class="card-text">Cancelled <a [routerLink]="['/applications','Cancelled']" [ngClass]="{'link-primary':DashboardDetails.applicationCAN>0,'link-secondary':DashboardDetails.applicationCAN<=0}"><span class="fs-3 text-end">{{DashboardDetails.applicationCAN}}</span></a></p>
+            </div>
+          </div>
+        </div>
+        <!--Following 1 section of <div> Code commented by atul on 24 apr 22 on client't request for remove some cards -->
+        <!-- <div class="col">
+          <div class="card border border-2 border-danger">
+            <div class="card-body">
+              <p class="card-text">Rejected (by Attorney) <a [routerLink]="['/applications','Rejected']" class="link-primary"><span class="fs-3 text-end">{{DashboardDetails.applicationREJ}}</span></a></p>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div><!-- Attorney View Link -->
+    <!-- Invoice View -->
+    <div class="container-fluid" >
+      <h3>Invoices</h3>
+        <div class="row">
+          <div class="col-xl-4 col-md-6 col-sm-12">
+            <div class="card bg-whitesmoke border border-2">
+              <div class="card-body">
+                <p class="card-text">Due <!-- : -->
+                  <a [routerLink]="['/invoice-list','Due']" [ngClass]="{'link-primary':DashboardDetails.invoiceDueCount>0,'link-secondary':DashboardDetails.invoiceDueCount<=0}"><span class="fs-3">{{DashboardDetails.invoiceDueCount}}</span></a>
+                  <!-- following 1 line commented by atul on 5 may 22 on mehul's request -->
+                  <!-- &nbsp;<a [routerLink]="['/invoice-list','Due']" [ngClass]="{'link-info':DashboardDetails.invoiceDue>0,'link-secondary':DashboardDetails.invoiceDue<=0}"><span class="fs-3">{{DashboardDetails.invoiceDue | currency:'USD':'symbol'}}</span></a> -->
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-md-6 col-sm-12">
+            <div class="card bg-whitesmoke border border-2">
+              <div class="card-body">
+                <p class="card-text">Paid <!-- : -->
+                  <a [routerLink]="['/invoice-list','Paid']" [ngClass]="{'link-primary':DashboardDetails.invoicePaidCount>0,'link-secondary':DashboardDetails.invoicePaidCount<=0}"><span class="fs-3">{{DashboardDetails.invoicePaidCount}}</span></a>
+                  <!-- following 1 line commented by atul on 5 may 22 on mehul's request -->
+                  <!-- &nbsp;<a [routerLink]="['/invoice-list','Paid']" [ngClass]="{'link-info':DashboardDetails.invoicePaid>0,'link-secondary':DashboardDetails.invoicePaid<=0}"><span class="fs-3">{{DashboardDetails.invoicePaid | currency:'USD':'symbol'}}</span></a> -->
+
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-md-6 col-sm-12">
+            <div class="card bg-whitesmoke border border-2">
+              <div class="card-body">
+                <p class="card-text">Rejected <!-- : -->
+                  <a [routerLink]="['/invoice-list','Rejected']" [ngClass]="{'link-primary':DashboardDetails.invoiceRejCount>0,'link-secondary':DashboardDetails.invoiceRejCount<=0}"><span class="fs-3">{{DashboardDetails.invoiceRejCount}}</span></a>
+                  <!-- following 1 line commented by atul on 5 may 22 on mehul's request -->
+                  <!-- &nbsp;<a [routerLink]="['/invoice-list','Rejected']" [ngClass]="{'link-info':DashboardDetails.invoiceRej>0,'link-secondary':DashboardDetails.invoiceRej<=0}"><span class="fs-3 text-end">{{DashboardDetails.invoiceRej | currency:'USD':'symbol'}}</span></a> -->
+
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div><!-- Invoice View Link -->
+    <!-- Notificaiton & Invoices-->
+    <!-- Following section commented by atul on 11 apr 22 on user's request -->
+    <!-- <div class="container-fluid">
+      <div class="row">
+        <div class="col">
+          <div class="card card-light text-white">
+            <div class="card-header">
+              <div class="card-title"><h3>Invocies</h3></div>
+            </div>
+            <div class="card-body">
+              <table class="table table-bordered">
+                <thead><tr>
+                  <td>Invoice #</td>
+                  <td>Date</td>
+                  <td>Due Date</td>
+                  <td>Amount</td>
+                  <td>Status</td>
+                  <td></td>
+                </tr></thead>
+                <tbody>
+                  <tr>
+                    <td>INV/14032022/001</td>
+                    <td>03/14/2022</td>
+                    <td>03/21/2022</td>
+                    <td>$400</td>
+                    <td>Pending</td>
+                    <td>Pay Now</td>
+                  </tr>
+                  <tr>
+                    <td>INV/14032022/001</td>
+                    <td>03/14/2022</td>
+                    <td>03/21/2022</td>
+                    <td>$400</td>
+                    <td>Pending</td>
+                    <td>Pay Now</td>
+                  </tr>
+                  <tr>
+                    <td>INV/14032022/001</td>
+                    <td>03/14/2022</td>
+                    <td>03/21/2022</td>
+                    <td>$400</td>
+                    <td>Paid</td>
+                    <td>View</td>
+                  </tr>
+                  <tr>
+                    <td>INV/14032022/001</td>
+                    <td>03/14/2022</td>
+                    <td>03/21/2022</td>
+                    <td>$400</td>
+                    <td>paid</td>
+                    <td>View</td>
+                  </tr>
+                  <tr>
+                    <td>INV/14032022/001</td>
+                    <td>03/14/2022</td>
+                    <td>03/21/2022</td>
+                    <td>$400</td>
+                    <td>Pending</td>
+                    <td>Pay Now</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card card-light">
+            <div class="card-header">
+              <div class="card-title"><h3>Notification</h3></div>
+            </div>
+            <div class="card-body">
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <td>Subject Notification</td>
+                    <td>Desctiption</td>
+                    <td>Posted Date / Time</td>
+                    <td>Open | Delete</td>
+                  </tr>
+                  <tr>
+                    <td>Subject Notification</td>
+                    <td>Desctiption</td>
+                    <td>Posted Date / Time</td>
+                    <td>Open | Delete</td>
+                  </tr>
+                  <tr>
+                    <td>Subject Notification</td>
+                    <td>Desctiption</td>
+                    <td>Posted Date / Time</td>
+                    <td>Open | Delete</td>
+                  </tr>
+                  <tr>
+                    <td>Subject Notification</td>
+                    <td>Desctiption</td>
+                    <td>Posted Date / Time</td>
+                    <td>Open | Delete</td>
+                  </tr>
+                  <tr>
+                    <td>Subject Notification</td>
+                    <td>Desctiption</td>
+                    <td>Posted Date / Time</td>
+                    <td>Open | Delete</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>-->
+    <!-- Notificaiton End-->
+  </div>
+
+</section>
+<app-idle></app-idle>

@@ -1,0 +1,89 @@
+<div class="card card-secondary card-cyan">
+  <div class="card-header">
+    <div class="card-tools col text-end">
+      <!-- <a href="#" title="Favorites"><span class="p-2"><i class="fa fa-star-o"></i></span></a> -->
+      <button type="button" class="btn btn-tool" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapseCardBody'+attorney.userMasterId"
+              aria-expanded="false" aria-controls="collapseCardBody" title="Collapse">
+        <i class="fa fa-minus"></i>
+      </button>
+      <button *ngIf="isLoggedin" type="button" class="btn btn-tool" data-toggle="tooltip" title="View Profile"
+              (click)="openAttorneyView(attorney.userMasterId)">
+        <i class="fa fa-link"></i>
+      </button>
+      <button *ngIf="!InviteBtn" type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn" (click)="closeModel()">
+        <span aria-hidden="true">×</span>
+      </button>
+      <!--<button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+    <i class="fa fa-times"></i>
+    </button>-->
+    </div>
+    <div class="col">
+
+      <!-- <h3 *ngIf="ShowMaskedName()" class="card-title"><img src="../../../assets/img/user3-128x128.jpg"alt="User Avatar"
+        class="img-sm img-circle me-1"> {{attorney.firstName}} {{attorney.lastName}} <br/>
+      ({{attorney.barDetails[0].toString()}})</h3> -->
+      <h3 class="card-title">
+        <!-- <img src="../../../assets/img/business_user-128x128.png" alt="User Avatar"
+             class="img-sm img-circle me-1">  Code Commented by Nirav for Avatar Coding 05-Jul-2022-->
+             <div class="avatar-attorneycard"> {{getInitials(attorney.firstName,attorney.lastName)}}</div>
+             {{attorney.firstName}} {{MaskedLastNames}}<br><span class="small">(BAR # {{MaskedBarNo}})</span>
+      </h3>
+      <!-- Bar No Added by  by Nirav on 18-Apr-2022 to resolve Verbal Points by Mehul Bhai -->
+    </div>
+  </div>
+  <div class="card-body" [attr.id]="'collapseCardBody'+attorney.userMasterId">
+    <!-- Code modified by atul on 19 apr 22 for task 479:Remove Ratings and Years of Experience from the Attorney card -->
+    <div class="row">
+      <div class="col-md-12"><i class="fa fa-map-marker text-secondary" title="State - Country"></i>&nbsp;&nbsp;{{attorney.stateName}}-{{attorney.countyName}}</div>
+      <!-- State and County Title Remove by Nirav on 18-Apr-2022 to resolve Verbal Points by Mehul Bhai -->
+
+    </div>
+    <div class="row">
+      <div class="col-md-12"><i class="fa fa-tasks text-secondary" title="Practice Area"></i>&nbsp;&nbsp;{{attorney.practiceType.join(', ')}}</div>
+      <!-- Practice Area added by Nirav on 18-Apr-2022 to resolve Verbal Points by Mehul Bhai -->
+      <!-- Code modified by atul on 19 apr 22 for task 479:Remove Ratings and Years of Experience from the Attorney card -->
+      <!--<div class="col-md-12" *ngIf="isLoggedin">Yrs of experience: {{attorney.expYears}}</div>-->
+    </div>
+    <div class="row">
+      <div class="col-md-12" *ngIf="isLoggedin">Avg rating: <ngb-rating [max]="5" [(rate)]="attorney.avgRating" [readonly]="true"></ngb-rating></div>
+    </div>
+      <!-- <div *ngIf="attorney.languages.length > 0 && this.isLoggedin" class="col-md-12">Bilingual: {{attorney.languages.toString()}}</div> -->
+      <!-- <div class="col-md-12" *ngIf="isLoggedin">Avg rating: <i class="fa fa-star text-yellow"></i><i class="fa fa-star text-yellow"></i><i
+          class="fa fa-star text-yellow"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></div> -->
+          <!-- Code commented by nirav on 14-Apr-2022 for work Item # 479 (3). also this functionality is not in place. we will add this functionality once functionality added. -->
+    <!-- </div> -->
+    <!--<hr />
+    <div class="row">
+        <div class="col-md-12">Applied $81</div>
+    </div>-->
+  </div>
+  <!-- /.card-body -->
+  <div class="modal-footer" style="visibility:visible;display:block;">
+    <div class="row">
+      <div *ngIf="InviteBtn" class="col-2">
+        <div class="form-group form-check form-switch" style="margin-left: -4.5px;" >
+          <input [checked]="IsSelectedAll" class="form-check-input" type="checkbox" (change)="SelectToInvite($event,attorney)" id="applyAttorney">
+        </div>
+      </div>
+      <div class="col-9">
+        <button *ngIf="isLoggedin" [disabled]="!check" class="btn btn-outline-dark rounded btn-sm me-1" title="Invite" (click)="openInvite()"><i
+            class="fa fa-user-plus"></i> Invite</button>
+        <button *ngIf="!isLoggedin" [disabled]="!check" class="btn btn-outline-dark rounded btn-sm me-1" title="Invite" (click)="openLoginPopup(attorney)"><i
+              class="fa fa-user-plus"></i> Invite</button>
+        <!-- <button *ngIf="showApproveBtn()" class="btn btn-outline-dark rounded btn-sm me-1" title="Approve" (click)="openApprove()"><i
+            class="fa fa-thumbs-o-up"></i></button>
+        <button *ngIf="showRejectBtn()" class="btn btn-outline-dark rounded btn-sm me-1" title="Reject" (click)="openReject()"><i
+            class="fa fa-thumbs-o-down"></i></button> -->
+        <!-- <button class="btn btn-outline-dark rounded btn-sm me-1" title="Message" (click)="openMessage(attorney.userMasterId)"><i
+            class="fa fa-comments-o"></i></button> -->
+        <button *ngIf="showDocumentBtn()" class="btn btn-outline-dark rounded btn-sm me-1" title="Documents"><i
+            class="fa fa-file-text-o"></i> Documents</button>
+      </div>
+      <div class="col-1">
+        <!-- <button *ngIf="ShowInfoBtn()" class="btn btn-outline-dark rounded btn-sm" title="Information" (click)="openAttorneyInfo('1')"><i
+            class="fa fa-info"></i></button> -->
+      </div>
+    </div>
+  </div>
+  <!-- /.card-footer-->
+</div>

@@ -1,0 +1,113 @@
+<div class="{{dynamicClass}}">
+  <div class="card-header">
+    <div class="card-tools col-3 text-end">
+      <a href="#" title="Favorites"><span class="p-2"><!--<i class="fa fa-star-o"></i>--></span></a>
+      <button type="button" class="btn btn-tool" data-bs-toggle="collapse" data-bs-target="#collapseCardBody" aria-expanded="false" aria-controls="collapseCardBody" title="Collapse">
+        <i class="fa fa-minus"></i>
+      </button>
+      <button type="button" class="btn btn-tool" data-bs-toggle="Appearance" title="View Details" *ngIf="userLoggedin()"
+            (click)="openInvoiceView(invoice.appearanceId)">
+        <i class="fa fa-link"></i>
+      </button>
+      <button *ngIf="callingFrom == 'Appearance'" type="button" class="btn btn-tool" data-bs-dismiss="modal" aria-label="Close" name="closeBtn"
+      (click)="close()">
+      <i class="fa fa-times"></i>
+    </button>
+      <button type="button" class="btn btn-tool" data-toggle="tooltip" title="Open" *ngIf="loggedin()">
+        <i class="fa fa-link"></i>
+      </button>
+      <!--<button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+    <i class="fa fa-times"></i>
+    </button>-->
+    </div>
+    <h3 class="card-title col-9"><span class="fs-5">Invoice # {{invoice.invoiceNo}}</span></h3>
+  </div>
+  <div class="card-body" id="collapseCardBody" style="margin-top:-10px;">
+    <div class="row">
+      <div class="col-md-6">Invoice Date : {{invoice.invoiceDate | date}}</div>
+      <div class="col-md-6">Due date: {{invoice.invoiceDueDate | date}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">Version: {{invoice.version}} </div>
+      <div class="col-md-6">Hourly rate: ${{invoice.hourlyRate}} </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">Hr: {{invoice.noHours}} Min: {{invoice.minutes}}</div>
+      <!-- <div class="col-md-6">Min: {{invoice.minutes}}</div> -->
+      <div class="col-md-6">Adjustments: ${{invoice.adjustmentAmount}}</div>
+    </div>
+    <div class="row">
+
+      <div class="col-md-6">Total: <span class="fs-5"><b>${{invoice.totalAmount}}</b></span></div>      
+    </div>
+    <div class="row">
+      <div class="col-md-12">Remarks: {{ (invoice.remarks.length>65)? (invoice.remarks | slice:0:65)+'...':(invoice.remarks) }}</div>
+    </div>
+    <!-- <div class="row">
+      <div class="col-md-12">Version: {{invoice.version}} </div>
+    
+    </div> -->
+    <div class="row">
+      <a style="cursor: pointer;" class="link-primary" data-bs-dismiss="modal"
+      data-bs-toggle="modal" data-bs-target="#Modal" (click)="openAppearanceView(invoice.appearanceId)">
+      {{invoice.appearanceCourt}}
+    </a></div>
+    <div class="row">
+      <a style="cursor: pointer;" class="link-primary" data-bs-dismiss="modal"
+      data-bs-toggle="modal" data-bs-target="#Modal" (click)="openAppearanceView(invoice.appearanceId)">
+        {{invoice.appearanceDate | date}}</a> 
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-md-5"><span class="fs-5"><b>{{invoice.recordStatus =='IC' || invoice.recordStatus =='IR'?(currentDate > invoiceDueDate ? 'Overdue': 'Due'): (invoice.recordStatus =='PR'? 'In Progress': (invoice.recordStatus =='IP' ? 'Paid' : (invoice.recordStatus =='DR' || invoice.recordStatus =='DP' ? 'Draft' : 'Rejected')))}}</b></span></div>
+      <div class="col-md-5" *ngIf="invoice.recordStatus =='IP' && invoice.isRated">
+        <ngb-rating [max]="5" [(rate)]="invoice.rating" [readonly]="true"></ngb-rating>
+        </div>
+      <div class="col-md-12  ms-0" *ngIf="profileType == 'A' && invoice.userMasterId != null">
+        <div  *ngIf="invoice.firmName != null && invoice.firmName != ''">
+          <a  style="cursor: pointer;" class="text-primary" data-toggle="tooltip"
+          title="View Profile" (click)="openEmployerDetails(invoice.userMasterId)"><i class="fa fa-building text-secondary" title="Lawfirm"></i>&nbsp;&nbsp;{{invoice.firmName}}</a></div>
+        <div *ngIf="invoice.firmName == null"><a  style="cursor: pointer;" class="text-primary" data-toggle="tooltip"
+          title="View Profile" (click)="openEmployerDetails(invoice.userMasterId)"><i class="fa fa-user text-secondary" title="Individual"></i>&nbsp;&nbsp;Individual</a></div>
+      </div>
+      <div class="col-md-12  ms-0" *ngIf="profileType != 'A' && invoice.attorneyName != null">
+        <a  style="cursor: pointer;" class="text-primary" data-toggle="tooltip" 
+          title="View Profile" (click)="ViewProfile(invoice.attorneyId)"><i class="fa fa-user text-secondary" title="Individual"></i>&nbsp;&nbsp; {{invoice.attorneyName}}</a><br>
+      </div>
+    
+    </div>
+  </div>
+  <!-- /.card-body -->
+  <div class="card-footer">
+    <div class="row">
+      <div class="col-lg-11">
+        <!-- following 2 line modified by atul on 26 apr 22 for testing the auto debit from employer. On due invoice card, 'payment' button for attorney  -->
+        <button *ngIf="PaymentButtonVisible" class="{{dynamicBtnClass}}" title="Payment" (click)="payInvoice(invoice)">
+          <i class="fa fa-credit-card"></i> {{PaymentButtonText}}
+        </button>
+        <button *ngIf="RejectButtonVisible" class="{{dynamicBtnClass}}" title="Reject" (click)="openReject(invoice)">
+          <i class="fa fa-thumbs-o-down"></i> Reject
+        </button>
+        <!--Following 2 buttons added by atul on 17 may 22 for invoice draft feature-->
+        <button *ngIf="UpdateButtonVisible" class="{{dynamicBtnClass}}"
+                (click)="Update(AppearanceId)" title="Update">
+          <i class="fa fa-pencil-square-o"></i> Update
+        </button>
+        <button *ngIf="invoice.recordStatus =='DR' || invoice.recordStatus =='DP'" class="{{dynamicBtnClass}}"
+                (click)="DeleteDraft()" title="Delete Draft">
+          <i class="fa fa-trash-o"></i> Delete
+        </button>
+        <button  class="{{dynamicBtnClass}}" title="Receipt" (click)="Receipt(invoice)">
+          <i class="fa fa-file-text-o"></i> Txn Details
+        </button>
+        <button *ngIf="invoice.recordStatus =='IP' && !invoice.isRated" class="{{dynamicBtnClass}}" title="Rate" (click)="Rate(invoice)">
+          <i class="fa fa-star-o"></i> Rate
+        </button>
+      </div>
+      <div class="col-lg-1 p-0 m-0 align-items-center">
+        <button class="{{dynamicBtnClass}}" title="Information" (click)="openInvoiceInfo(AppearanceId)"><i class="fa fa-info"></i></button>
+      </div>
+    </div>
+  </div>
+  <!-- /.card-footer-->
+</div>

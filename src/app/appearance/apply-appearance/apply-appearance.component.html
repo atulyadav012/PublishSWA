@@ -1,0 +1,24 @@
+<div class="card card-success">
+  <div class="card-header">
+    <h5>{{HeaderText}} Appearance</h5>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+    <div class="card-body">
+      <div class="input-group">
+        <!-- Code modified by atul on 13 apr 22 for fixing bug 474:Attorney bidding for an appearance: Max bid rate label missing -->
+        <label>Hourly rate :<!--<span *ngIf="maxRate != '99999'"> [${{minMaxRate}}]</span>-->
+          <!-- <span> (Max Bid ${{maxRate}})</span>: -->
+         </label> &nbsp;&nbsp;
+        &nbsp;<input type="number" [(ngModel)]="BidAmount" (keypress)="decimalFilter($event)" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Message to Employer:</label>
+        <textarea class="form-control" [(ngModel)]="MessageEmployer" row="3"></textarea>
+      </div>
+    </div>
+    <div class="card-footer text-center">
+      <button type="submit" (click)="BidApperance()" class="btn btn-success">Submit</button>
+    </div>
+</div>

@@ -1,9 +1,17 @@
 // This file can be replaced during build by using the `fileReplacements` array.
-// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
+// `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiUrl: 'http://localhost:21897/api/',
+  feature: {
+    Idle:{
+      enable: true,
+      idleTimeSeconds: 600, // In future we will pick this from DB which will set from Admin module
+      timeOutSeconds: 1
+    }
+  }
 };
 
 /*

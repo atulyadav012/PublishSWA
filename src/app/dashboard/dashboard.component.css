@@ -1,0 +1,8 @@
+.bg-whitesmoke{
+    background-color: whitesmoke;
+}
+.card-body{
+    /* background-image: linear-gradient(#b1d8b7,whitesmoke,white);
+    background-image: linear-gradient(#bdb1d8,whitesmoke,white); */
+    background-image: linear-gradient(whitesmoke,white);
+}

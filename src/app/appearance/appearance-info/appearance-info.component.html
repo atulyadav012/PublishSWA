@@ -1,0 +1,33 @@
+<div class="card card-secondary bg-light">
+  <div class="card-header">
+    <h5>{{popupTitle}}</h5>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="card-body">
+    <div *ngIf="AppearanceInfo" class="form-group">
+      <ul>
+        <li *ngFor="let info of AppearanceInfo">
+          <b>{{info.appearanceInfo1}}</b>
+          : {{info.createdDate  | date: 'MMM d, y, h:mm a'}} 
+          <span *ngIf="info.remarks != ''"> - </span> {{info.remarks | currency:'USD':'symbol'}}
+          <span *ngIf="info.appearanceInfo1 != 'Inv revised' && info.appearanceInfo1 != 'Inv rejected'  && info.appearanceInfo1 != 'Inv raised' && info.appearanceInfo1 != 'Inv paid' && info.remarks != ''">/hr</span> 
+          - {{info.createdBy}}        
+        </li>
+      </ul>
+    </div>
+   
+    <div *ngIf="!AppearanceInfo">
+      <img class="spinner" src="../../../assets/img/loading.gif" alt="HTML5 Icon" width="128" height="128">
+    </div>
+    <!-- following section added by atul on 11 apr 22 for fix bug 475: Attorney view - Info icon keeps showing loader for Open appearances  -->
+    <div *ngIf="AppearanceInfo.length == 0">
+      <ul>
+        <li >
+          <b>No Info Available.</b>            
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

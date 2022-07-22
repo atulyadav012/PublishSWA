@@ -1,0 +1,97 @@
+.carousel-indicators {
+  /* right:80px;Commented for work item # 522 */
+  top: 20px;
+  margin: 0;
+  position: absolute;
+  height: max-content;
+  z-index: 101;
+}
+
+  .carousel-indicators > [data-bs-target] {
+    background-color: #001b56;
+    margin: 0.25rem;
+    padding: 0.5rem;
+    color: #fff;
+    width: 30%;
+    height: max-content;
+    text-indent: unset;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+    .carousel-indicators > [data-bs-target].active, .carousel-indicators > [data-bs-target]:hover, .carousel-indicators > [data-bs-target]:focus {
+      background-color: #FFF;
+      margin: 0.25rem;
+      padding: 0.5rem;
+      color: #001b56;
+    }
+
+.carousel .carousel-item {
+  height: 85vh;
+}
+
+.carousel-item:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* background: rgba(60,60,60,0.8); Commented by Nirav 18-May-2022 for new slider images*/
+}
+
+.carousel-item img {
+  position: absolute;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  min-height: 87vh;
+}
+
+.carousel-caption {
+  transform: translateY(-50%);
+  top: 45%;
+  bottom: unset;
+  z-index: 1;
+}
+
+.search-control {
+  font-size: 1.25rem;
+  color: black;
+}
+
+.centerMe {
+  /*height: 60vh;*/ /*this makes the div 300px tall*/
+  display: flex; /*this applies the flexbox display property to the div so we can use the properties below*/
+  align-items: center; /*this vertically aligns everything to the center*/
+  justify-content: center; /*this horizontally aligns everything to the center*/
+  z-index: 100;
+  opacity: unset;
+}
+.CenterControl{
+  padding-left: 7%;
+}
+
+@media (max-width: 768px) {
+  /* .carousel-indicators {
+    right: unset;
+  } */
+  .carousel-indicators > [data-bs-target] {
+    width: auto;
+  }
+  .carousel-caption {
+    top:55%; /*this makes the div 300px tall*/
+  }
+  .CenterControl{padding-left: unset;}
+}
+
+@media (max-width: 480px) {
+  .carousel-caption {
+    top: 18rem; /*this makes the div 300px tall*/
+  }
+}
+
+
+.carousel-control-next, .carousel-control-prev {
+  width: 5%;
+}

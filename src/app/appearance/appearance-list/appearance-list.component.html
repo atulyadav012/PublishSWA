@@ -1,0 +1,127 @@
+<!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>{{status}} Appearances</h1>
+            <ol>
+                <li *ngIf="!authService.isLoggedIn()"><a [routerLink]="['/']">Home</a></li>
+                <li *ngIf="authService.isLoggedIn()"><a [routerLink]="['/dashboard']">Home</a></li>
+                <li>{{status}} Appearances</li>
+            </ol>
+        </div>
+    </div>
+</section><!-- End Breadcrumbs -->
+<section>
+    <div class="mb-3">
+        <div class="d-flex" id="wrapper">
+            <app-side-filter *ngIf="appearList && showFilter" [CurrentURL]="currentURL" [CalledFor]="CallingFor"
+                [List]="appearList" (FilteredList)="Filter($event)"></app-side-filter>
+            <!-- /#sidebar-wrapper -->
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-top  pt-1 pb-1">
+                    <div class="container-fluid">
+                        <div class="col-md-6">
+                            <button (click)="ShowFilterPane()" class="btn btn-light" id="menu-toggle">
+                                <i class="fa fa-filter"></i>&nbsp;
+                                <span>Filter by</span>
+                            </button>
+                        </div>
+                        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button> -->
+                        <!-- <div class="col-md-6">
+                            <div class="float-end">
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <div class="dropdown">
+                                            <button class="btn btn-light dropdown-toggle" type="button"
+                                                id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                Order by
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                <li><a class="dropdown-item" href="#">Name</a></li>
+                                                <li><a class="dropdown-item" href="#">Date</a></li>
+                                                <li><a class="dropdown-item" href="#">View</a></li>
+                                                <li><a class="dropdown-item" href="#">Rating</a></li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-outline-secondary active">
+                                                <i class="fa fa-th"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary">
+                                                <i class="fa fa-list"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </nav>
+
+
+                <div class="container-fluid">
+                    <div class="row p-2">
+                        <div class="card card-light">
+                            <div class="bg-teal pt-2">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <!-- <p *ngIf="appearList?.length > 0 && appearList?.length < 5">We are expanding our services. You will soon find more Attorneys in this location.</p> -->
+                                        <p style="margin-bottom: 0px;" *ngIf="appearList?.length >0">Showing
+                                            {{appearList?.length}} appearances <span
+                                                *ngIf="selectedCaseTypeText.length >0 || selectedstateText.length >0">matching</span>
+                                            <span *ngIf="selectedCaseTypeText.length >0"> Case Type:
+                                                {{selectedCaseTypeText}}</span><span
+                                                *ngIf="selectedstateText.length >0">,
+                                                Location: {{selectedstateText.toString()}}</span></p>
+                                        <p style="margin-bottom: 0px;" *ngIf="appearList?.length ==0 || appearList == null ">No
+                                            Appearances matching<span *ngIf="selectedCaseTypeText.length >0"> Case
+                                                Type:
+                                                {{selectedCaseTypeText}}</span><span
+                                                *ngIf="selectedstateText.length >0">,
+                                                Location: {{selectedstateText.toString()}}</span></p>
+                                        <!-- <p *ngIf="appearList == null || appearList?.length == 0">We will be launching services in this location soon.</p> -->
+
+                                        <span style="color: #0d6efd;font-weight: bold;"
+                                            *ngIf="appearList?.length <5 && topSearch && profileType !='E' && profileType !='I'">
+                                                Please note: we are expanding our services and will soon be able to offer more Appearances in your region!</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <!-- <h1 class="mt-4">Simple Sidebar</h1>
+          <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
+          <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when clicked.</p> -->
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6"
+                            *ngFor="let item of appearList;trackBy:trackAutoId">
+                            <app-appearance-card [Appearance]="item" [status]="status"
+                                (RefreshList)="RefreshAppearancelist()"></app-appearance-card>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /#page-content-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+    </div>
+</section>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="ball-clip-rotate-multiple"
+    [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
+<app-idle></app-idle>

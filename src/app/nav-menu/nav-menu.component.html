@@ -1,0 +1,239 @@
+<header>
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary" [routerLink]="['/']" *ngIf="!loggedin()">
+        <img src="assets/img/Videtur_Logo.png" alt="Videtur" />
+      </a>
+      <a class="navbar-brand text-primary" [routerLink]="['/dashboard']" *ngIf="loggedin()">
+        <img src="assets/img/Videtur_Logo.png" alt="Videtur" />
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse flex-sm-row-reverse" id="navbarNav" *ngIf="!loggedin()">
+        <ul class="navbar-nav">
+          <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link" [routerLink]="['/']">Home</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link" [routerLink]="['/about-us']">About Us</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link" [routerLink]="['/how-It-works']">How it Works</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link" [routerLink]="['/contact-us']">Contact Us</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#loginModal"
+              (click)="openLoginPopup('1')">
+              <i class="fa fa-user"></i> Sign
+              In
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#registerModal"
+              (click)="openRegisterPopup('2')">
+              <i class="fa fa-user-plus"></i> Sign up
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- SEARCH FORM -->
+      <div class="form-inline" *ngIf="loggedin()">
+        <!-- <div class="form-group"> -->
+        <div class="row mt-3">
+          <div class="col-10">
+            <app-top-filter [CalledFor]="Calledfor" [displayat]="'N'"></app-top-filter>
+          </div>
+          <div id="console-event"></div>
+        </div>
+        <!-- </div> -->
+      </div>
+
+      <div class="collapse navbar-collapse flex-sm-row-reverse" id="navbarNav" *ngIf="loggedin()">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarAppearanceDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa fa-address-card"></i>&nbsp;Appearance
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarAppearanceDropdown">
+              <li *ngIf="userInfo.profileType =='E' || userInfo.profileType =='EA'|| userInfo.profileType =='I' || (userInfo.profileType =='' && userInfo.parentUserId !=null)">
+                <a class="dropdown-item" [routerLink]="['appearance-entry']">
+                  <i class="fa fa-plus"></i>&nbsp;New Appearance
+                </a>
+              </li>
+              <li *ngIf="userInfo.profileType =='E' || userInfo.profileType =='EA'|| userInfo.profileType =='I' || (userInfo.profileType =='' && userInfo.parentUserId !=null)">
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item"
+                style="cursor: pointer" (click)="componentReload('appearance-list','Open')">Open</a></li>
+              <li *ngIf="userInfo.profileType =='A'"><a class="dropdown-item"
+                  [routerLink]="['applications','Invited']">Invited</a></li>
+              <li *ngIf="userInfo.profileType =='A'"><a class="dropdown-item"
+                  [routerLink]="['applications','Applied']">Applied</a></li>
+              <!-- <li *ngIf="userInfo.profileType !='A'"><a class="dropdown-item"
+                  [routerLink]="['appearance-list','Filled']">Filled</a>
+              </li> -->
+              <li *ngIf="userInfo.profileType !='A'"><a class="dropdown-item"
+                style="cursor: pointer" (click)="componentReload('appearance-list','Filled')">Filled</a>
+            </li>
+              <li *ngIf="userInfo.profileType =='A'"><a class="dropdown-item"
+                style="cursor: pointer" (click)="componentReload('appearance-list','Approved')">Approved</a>
+              </li>
+              <li *ngIf="userInfo.profileType =='A'"><a class="dropdown-item"
+                (click)="componentReload('applications','UnApproved')">Not Approved</a>
+              </li>
+              <li>
+                <a class="dropdown-item" style="cursor: pointer" (click)="componentReload('appearance-list','Completed')">Completed</a>
+              </li>
+              <li>
+                <a class="dropdown-item" style="cursor: pointer" (click)="componentReload('appearance-list','Closed')">Closed</a>
+              </li>
+              <li *ngIf="userInfo.profileType =='A'">
+                <a class="dropdown-item" [routerLink]="['applications','Withdraw']">Withdrawn</a>
+              </li>
+              <li *ngIf="userInfo.profileType !='A'">
+                <a class="dropdown-item" style="cursor: pointer" (click)="componentReload('appearance-list','Cancelled')">Cancelled</a>
+              </li>
+              <li>
+                <a class="dropdown-item" style="cursor: pointer" (click)="componentReload('appearance-list','Expired')">Expired</a>
+              </li>
+              <!-- following 4 lines modified by atul on 24 jun 22 for showing invoice on cancelled -->
+              <!-- <li *ngIf="userInfo.profileType =='A'"><a class="dropdown-item"
+                  [routerLink]="['applications','Cancelled']">Cancelled</a></li> -->
+                  <li *ngIf="userInfo.profileType =='A'">
+                    <a class="dropdown-item" style="cursor: pointer" (click)="componentReload('appearance-list','Cancelled')">Cancelled</a>
+                  </li>
+              <li *ngIf="userInfo.profileType =='A'"><a class="dropdown-item"
+                  [routerLink]="['applications','Rejected']">Declined</a></li>
+            </ul>
+          </li>
+          <li *ngIf="userInfo.profileType !='A'" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarApplicationDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa fa-address-card"></i>&nbsp;Application
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarApplicationDropdown">
+              <li><a class="dropdown-item" style="cursor: pointer" (click)="componentReload('applications','Invited')">Invited Attorneys</a></li>
+              <li><a class="dropdown-item" style="cursor: pointer" (click)="componentReload('applications','Applied')">Applied Attorneys</a></li>
+              <li><a class="dropdown-item" style="cursor: pointer" (click)="componentReload('applications','Rejected')">Invitations Declined</a></li>
+              <li><a class="dropdown-item" style="cursor: pointer" (click)="componentReload('applications','UnApproved')">Not Approved</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarInvoiceDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa fa-address-card"></i>&nbsp;Invoice
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarInvoiceDropdown">
+              <!--//Following 3 line added by atul on 17 may 22 for invoice draft feature-->
+              <li *ngIf="userInfo.profileType =='A'"><a class="dropdown-item" [routerLink]="['invoice-list','Draft']">Draft Invoice</a></li>
+              <li><a class="dropdown-item" [routerLink]="['invoice-list','Due']">Due Invoice</a></li>
+              <li><a class="dropdown-item" [routerLink]="['invoice-list','Paid']">Paid Invoice</a></li>
+              <li><a class="dropdown-item" [routerLink]="['invoice-list','Rejected']">Rejected Invoice</a></li>
+            </ul>
+          </li>
+          <!-- Notifications Dropdown Menu -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" id="navbarNotoficationDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <i class="fa fa-bell"></i>
+              <span class="badge badge-warning navbar-badge">{{notifications?.length}}</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarNotoficationDropdown">
+              <li>
+                <h3 class="dropdown-header">{{notifications?.length}} Notifications</h3>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <a [routerLink]="['/notifications']" class="dropdown-item">
+                  <i class="fa fa-envelope mr-2"></i> {{notifications?.length}} new messages
+                  <span *ngIf="notifications?.length >0"
+                    class="float-right text-muted text-sm">{{notifications[0].triggerDateTime| dateAgo}}</span>
+                </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a [routerLink]="['/notifications']" class="dropdown-item dropdown-footer">See All Notifications</a>
+              </li>
+            </ul>
+          </li>
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="nav-item dropdown user-menu">
+            <a href="#" class="dropdown-toggle pt-2 pb-2 ps-2" id="navbarUserDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+               <!--<img src="assets/img/business_user-160x160.png" class="user-image" alt="User Image"> Code Commented by Nirav for Avatar Coding 05-Jul-2022 -->
+              <div class="avatar"> {{getInitials(userInfo.firstName,userInfo.lastName)}}</div>
+              <span class="hidden-xs">{{userInfo.firstName}} {{userInfo.lastName}}</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarUserDropdown">
+              <!-- User image -->
+              <li class="user-header bg-navy">
+                <!-- <img src="assets/img/business_user-160x160.png" class="img-circle" alt="User Image"> Code Commented by Nirav for Avatar Coding 05-Jul-2022 -->
+                <div class="col col-12"><div class="avatar-big" style="margin:auto;"> {{getInitials(userInfo.firstName,userInfo.lastName)}}</div></div>
+                <p class="user-details">
+                  {{userInfo.firstName}} {{userInfo.lastName}}
+                  <small> {{profile}} {{userInfo.username}} </small><br>
+                  <!-- <i class="fa fa-star white"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i
+                    class="fa fa-star-o"></i><i class="fa fa-star-o"></i> -->
+                  <ngb-rating *ngIf="userInfo.profileType =='EA' || userInfo.profileType =='E' || userInfo.profileType =='I'" [max]="5" [(rate)]="rateAsEmployer" [readonly]="true"></ngb-rating>
+                  <ngb-rating *ngIf="userInfo.profileType =='A'" [max]="5" [(rate)]="rateAsAttorney" [readonly]="true"></ngb-rating>
+                </p>
+              </li>
+
+              <li class="bg-light">
+                <div class="row" *ngIf="userInfo.profileType =='EA' || (changeFromcheckBox!= null && changeFromcheckBox != '')">
+                  <div class="text-center"><span>Switch Profile</span></div>
+                  <div class="col me-2 text-end" [ngClass]="EA?'unSelected':'selected'">
+                    Employer
+                  </div>
+                  <div class="col-2 mt-2">
+                    <div class="form-group form-check form-switch">
+                      <input class="form-check-input" [checked]="EA" type="checkbox" (change)="ChangeProfile($event)" id="applyAttorney">
+                    </div>
+                  </div>
+                  <div class="col ms-2" [ngClass]="EA?'selected':'unSelected'">Attorney</div>
+                  <!-- <div class="col ms-3"><span class="small">{{profile}}</span></div> -->
+                </div>
+              </li>
+              <!-- Menu Body -->
+              <li class="dropdown-item user-body bg-light">
+                <div class="row">
+                  <div class="float-left col-sm-6">
+                    <a *ngIf="(userInfo.profileType =='E' || userInfo.profileType =='EA') && userInfo.userRoleName== 'Administrator'"
+                      class="dropdown-item" [routerLink]="['/sub-users']">
+                      <i class="fa fa-users"></i>&nbsp;Sub Users
+                    </a>
+                  </div>
+                  <div class="float-right  col-sm-6">
+                    <a class="dropdown-item" [routerLink]="['/settings']">
+                      <i class="fa fa-cogs"></i>&nbsp;Settings
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <!-- Menu Footer-->
+              <li class="dropdown-item user-footer bg-light">
+                <div class="row">
+                  <div class="float-left col-sm-6">
+                    <a routerLink="/profile" class="btn btn-default btn-flat">Profile</a>
+                  </div>
+                  <div class="float-right  col-sm-6">
+                    <a href="#" class="btn btn-default btn-flat" (click)="onSignOut()">Sign out</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

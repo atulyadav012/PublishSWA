@@ -1,0 +1,34 @@
+<div class="card card-danger bg-light">
+  <div class="card-header">
+    <h5>Cancel Appearance</h5>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">
+      <span *ngIf="GetAppearanceDueInHrs > -1 && GetAppearanceDueInHrs < 24" style="color: red;">You are cancelling a filled appearance that is due in 24 hrs. An invoice of 1 hr will still be generated. <br/> </span> 
+      <span *ngIf="GetAppearanceDueInHrs > 23" style="color: orange;">You are cancelling a filled appearance. <br/> </span>
+      Are you sure you want to cancel  the Appearance request? </h5>
+    <p>A notification will be sent to all the attorneys who have applied / have been invited. </p>
+    <div class="form-group">
+      <label>Cancellation reason </label>
+      <!-- Cancel Appearance Reason populate from Other Master Record Type 'ACR' -->
+      <select id="Select1" [(ngModel)]="reason" class="form-control">
+        <!-- <option value="Reason 1">Reason 1</option>
+        <option value="Reason 2">Reason 2</option>
+        <option value="Others">Others</option> -->
+        <option *ngFor="let reason of reasons" value="{{reason?.recordName}}">
+          {{reason?.recordName}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Remarks: [mandatory when reason is ‘other’]</label>
+      <textarea class="form-control" [(ngModel)]="remarks" rows="3"></textarea>
+    </div>
+  </div>
+  <div class="card-footer text-center">
+    <button type="submit" (click)="CancelAppearance()" class="btn btn-danger text-light">Submit</button>
+  </div>
+</div>

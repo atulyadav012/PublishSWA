@@ -1,0 +1,22 @@
+<div class="card card-success">
+  <div class="card-header">
+    <h5>Approve Attorney</h5>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  
+    <div class="card-body">
+      <h5 class="card-title">You are approving {{src.firstName}} {{src.lastName}}!</h5>
+      <br />
+      <p>All other applications will be automatically marked as '‘'Not Selected'’'. </p>
+      <div class="form-group">
+        <label>Message to Attorney</label>
+        <textarea class="form-control" [(ngModel)]="Message" row="3"></textarea>
+      </div>
+    </div>
+    <div class="card-footer text-center">
+      <button type="submit" (click)="ApproveAttorney()" class="btn btn-success">Submit</button>
+    </div>
+  
+</div>

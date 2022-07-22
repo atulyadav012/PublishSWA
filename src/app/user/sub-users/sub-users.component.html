@@ -1,0 +1,68 @@
+<!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs mb-3">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Sub Users</h1>
+      <ol>
+        <li><a [routerLink]="['/Dashboard']">Home</a></li>
+        <li>Sub Users</li>
+      </ol>
+    </div>
+  </div>
+</section><!-- End Breadcrumbs -->
+<section>
+  <div class="container mb-3">
+    <table class="table table-bordered">
+      <thead class="table-primary">
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Sub User Login Id</th>
+          <th>Role Name</th>
+          <th>Status</th>
+          <th style="width:7%"><i class="fa fa-cogs"></i>
+            &nbsp;&nbsp;
+            <button type="button" class="btn btn-sm btn-outline-primary" placement="right" popoverTitletitle="Important Instructions" ngbPopover="Sub user added will be available under parent user."> <i class="fa fa-info-circle"></i></button></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th><input type="text" class="form-control" [(ngModel)]="firstName" id="inputFName" placeholder="First Name">
+          </th>
+          <th><input type="text" class="form-control" [(ngModel)]="lastName" id="inputLastName" placeholder="Last Name">
+          </th>
+          <th><input type="email" class="form-control" [(ngModel)]="email" id="inputEmail" placeholder="Login Id">
+          </th>
+          <th>
+            <select class="form-control" [(ngModel)]="roleName"
+                      id="exampleFormControlSelect1">
+                      <option value="">Select Role</option>
+                      <option *ngFor="let role of Roles" value="{{role?.userRoleName}}">
+                        {{role?.userRoleName}}
+                      </option>
+                    </select>
+          </th>
+          <th></th>
+          <th class="text-center"><img src="assets/img/add_new.png" (click)="AddSubUser()" title="edit"></th>
+        </tr>
+        <tr *ngFor="let subuser of subUserList">
+          <td>{{subuser.firstName}}</td>
+          <td>{{subuser.lastName}}</td>
+          <td>{{subuser.loginId}}</td>
+          <td>{{subuser.roleName}}</td>
+          <td>{{subuser.recordStatus}}</td>
+          <td class="text-center">
+            <img src="assets/img/Empty dustbin.png" (click)="DeleteSubUser(subuser)" title="delete"> &nbsp;
+            <i class='fa fa-envelope-open-o' style='color: darkgreen' title="Resend Verification Email" (click)="ResendVerificationEmail(subuser.loginId)"></i>
+            <!-- <img src="assets/img/Empty dustbin.png" (click)="DeleteSubUser(subuser)" title="Resend verification email"> -->
+          </td>
+        </tr>
+      </tbody>
+      <!-- <tfoot>
+        <tr>
+          <td colspan="4"></td>
+        </tr>
+      </tfoot> -->
+    </table>
+  </div>
+</section>

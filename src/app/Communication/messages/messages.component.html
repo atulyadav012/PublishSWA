@@ -1,0 +1,43 @@
+<div class="card card-info">
+  <div class="card-header">
+    <h5>Messages</h5>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" name="closeBtn" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="card-body">
+    <div class="chat">
+      <div class="chat-history">
+        <ul>
+          <li *ngFor="let msg of Messages" class="clearfix">
+            <div *ngIf="msg.fromId === currentUser" class="message-data align-right">
+              <span class="message-data-time">{{msg.createdDateTime  | DateFormat}}</span> &nbsp; &nbsp;
+              <span class="message-data-name">{{msg.fromFirstName}}</span> <i class="fa fa-circle me"></i>
+            </div>
+            <div *ngIf="msg.fromId !== currentUser" class="message-data">
+              <span class="message-data-time">{{msg.createdDateTime | DateFormat}}</span> &nbsp; &nbsp;
+              <span class="message-data-name">{{msg.fromFirstName}}</span> <i class="fa fa-circle me"></i>
+              <i class="fa fa-reply" aria-hidden="true" (click)="reply(msg)"></i>
+            </div>
+            <div *ngIf="msg.fromId === currentUser" class="message other-message float-right">
+              {{msg.message}}
+            </div>
+
+            <div *ngIf="msg.fromId !== currentUser" class="message my-message">
+              {{msg.message}}
+            </div>
+          </li>
+        </ul>
+
+      </div> <!-- end chat-history -->
+    </div>
+  </div>
+  <div class="card-footer text-center">
+      <div class="form-group">
+        <div class="input-group">
+          <textarea class="form-control" [(ngModel)]="Message" row="2"></textarea>&nbsp;&nbsp;
+          <button type="submit" (click)="AddMessage()" class="btn messagebtn"><i class="fa fa-arrow-circle-right"></i></button>
+        </div>
+      </div>
+  </div>
+</div>

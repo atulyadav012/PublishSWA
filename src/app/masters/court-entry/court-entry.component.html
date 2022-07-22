@@ -1,0 +1,98 @@
+<div class="card card-primary">
+  <div class="card-header">
+    <h5>Court Entry</h5>
+  </div>
+  <div class="card-body">
+    <!-- <form [formGroup]="vForm" (ngSubmit)="SaveData()"> -->
+    <form [formGroup]="courtForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label class="form-label">Court Type</label>
+        <select class="form-select" [ngClass]="{ 'is-invalid': (submitted && f.courtTypeId.errors) }" formControlName="courtTypeId">
+          <option value="">Select Court Type</option>
+          <option *ngFor="let type of CourtTypes" value="{{type.autoId}}">
+            {{type.recordName}}
+          </option>
+        </select>
+        <div *ngIf="f.courtTypeId.touched && f.courtTypeId.invalid && submitted" class="alert alert-danger">
+          <div *ngIf="f.courtTypeId.errors">Please select court type.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Court Name</label>
+        <input type="text" [ngClass]="{ 'is-invalid': (submitted && f.courtName.errors) }" class="form-control" id="courtName" formControlName="courtName">
+        <div *ngIf="f.courtName.touched && f.courtName.invalid" class="alert alert-danger">
+          <div *ngIf="f.courtName.errors">Please enter court name.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Address </label>
+        <textarea class="form-control" [ngClass]="{ 'is-invalid': (submitted && f.address.errors) }" formControlName="address" id="address" rows="2"></textarea>
+        <div *ngIf="f.address.touched && f.address.invalid" class="alert alert-danger">
+          <div *ngIf="f.address.errors">Please enter Address.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <label class="form-label">State</label>
+            <!-- <select class="form-select" formControlName="stateMasterId" (change)="onChangeState()"> -->
+            <select class="form-select" [ngClass]="{ 'is-invalid': (submitted && f.stateMasterId.errors) }" (change)="onSelectedState($event.target)" formControlName="stateMasterId">
+              <option value="">Select State</option>
+              <option value="{{state.autoId}}" *ngFor="let state of stateList">{{state.stateName}}</option>
+            </select>
+            <div *ngIf="f.stateMasterId.touched && f.stateMasterId.invalid && submitted" class="alert alert-danger">
+              <div *ngIf="f.stateMasterId.errors">Please select state.</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label class="form-label">County</label>
+            <!-- <select class="form-select" formControlName="countyMasterId" (change)="onChangeCounty()"> -->
+            <select class="form-select" [ngClass]="{ 'is-invalid': (submitted && f.countyMasterId.errors) }" (change)="onSelectedCounty($event.target)" formControlName="countyMasterId">
+              <option value="">Select County</option>
+              <option *ngFor="let county of countyList" value="{{county?.autoId}}">
+                {{county?.countyName}}
+              </option>
+            </select>
+            <div *ngIf="f.countyMasterId.touched && f.countyMasterId.invalid && submitted" class="alert alert-danger">
+              <div *ngIf="f.countyMasterId.errors">Please select county.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <label class="form-label">City</label>
+            <select class="form-select" [ngClass]="{ 'is-invalid': (submitted && f.cityMasterId.errors) }" formControlName="cityMasterId">
+              <option value="">Select City</option>
+              <option *ngFor="let city of cityList" value="{{city?.autoId}}">
+                {{city?.cityName}}
+              </option>
+            </select>
+            <div *ngIf="f.cityMasterId.touched && f.cityMasterId.invalid && submitted" class="alert alert-danger">
+              <div *ngIf="f.cityMasterId.errors">Please select city.</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label class="form-label">Zip Code</label>
+            <input type="text" [ngClass]="{ 'is-invalid': (submitted && f.zipCode.errors) }" class="form-control" id="zipCode" formControlName="zipCode">
+            <div *ngIf="f.zipCode.touched && f.zipCode.invalid" class="alert alert-danger">
+              <div *ngIf="f.zipCode.errors">Please enter zip code.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group text-center">
+        <!-- <button class="btn btn-primary" type="submit" [disabled]="!vForm.valid">Save</button>&nbsp;-->
+        <button class="btn btn-primary" type="submit">Save</button>&nbsp;
+        <button class=" btn btn-primary" (click)="activeModal.dismiss('Cross click')">Close</button>
+      </div>
+    </form>
+  </div>
+</div>
