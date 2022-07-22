@@ -27,6 +27,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
+    - name: Set Config
+      run: npm config set legacy-peer-deps true
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright
